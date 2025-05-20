@@ -2,10 +2,21 @@ import { AuthLabel } from "./AuthLabel";
 import { AuthInputField } from "./AuthInputField";
 import { AuthLink } from "./AuthLink";
 import { AuthButton } from "./AuthButton";
+import { loginUser } from "../../services/Auth";
 
 export function SignInForm(){
     return (
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" 
+          action={async (formData) => {
+            const response = await loginUser(formData);
+            if(response.errors){
+              console.log(errors);
+            }
+            if(response.data){
+              console.log(response.data, 'in sign in form');
+            }
+          }}
+        >
           <div>
             <AuthLabel
               labelFor="email"

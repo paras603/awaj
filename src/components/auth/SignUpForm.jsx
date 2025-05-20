@@ -1,10 +1,21 @@
+import { registerUser } from "../../services/Auth";
 import { AuthButton } from "./AuthButton";
 import { AuthInputField } from "./AuthInputField";
 import { AuthLabel } from "./AuthLabel";
 
 export function SignUpForm(){
     return (
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" 
+            action={async (formData) => {
+              const response = await registerUser(formData);
+              if(response.errors){
+                  console.log(response.errors);
+              }
+              if(response.data){
+                  console.log(response.data,'in sign up form');
+              }
+            }}
+        >
             <div>
                 <AuthLabel
                     labelFor="email"
@@ -31,6 +42,7 @@ export function SignUpForm(){
                         type="text"
                         name="username"
                         id="username"
+                        autoComplete="username"
                         required={true}
                     />
                 </div>
@@ -58,14 +70,14 @@ export function SignUpForm(){
                 <div className="flex items-center justify-between">
                     <AuthLabel
                         label="Password Confirmation"
-                        labelFor="password-confirmation"
+                        labelFor="password_confirmation"
                     />
                 </div>
                 <div className="mt-2">
                     <AuthInputField
                         type="password"
-                        name="password-confirmation"
-                        id="password"
+                        name="password_confirmation"
+                        id="password_confirmation"
                         autoComplete="current-password"
                         required={true}
                     />

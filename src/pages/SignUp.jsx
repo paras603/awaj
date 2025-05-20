@@ -4,11 +4,11 @@ import { AuthLayout } from "../components/layouts/AuthLayout";
 
 export function SignUp(){
     return (
-      <AuthLayout title="Sign in to your account">
+      <AuthLayout title="Become a member">
         <SignUpForm/>
         <AuthFooter
           text="Already Registerd?"
-          linkHref="#"
+          linkHref="/signin"
           linkText="Sign In!"
         />
       </AuthLayout>
