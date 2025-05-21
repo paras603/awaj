@@ -2,8 +2,8 @@ import { Route, Routes } from 'react-router';
 import { App } from '../App.jsx';
 import { SignIn } from '../pages/SignIn';
 import { SignUp } from '../pages/SignUp.jsx';
+import ProtectedLayout from '../components/layouts/ProtectedLayout.jsx';
 import Dashboard from '../pages/dashboard.jsx';
-import ProtectedLayout from '../hooks/ProtectedLayout.jsx';
 
 export function AppRoutes(){
     return (
@@ -13,7 +13,7 @@ export function AppRoutes(){
             <Route path='/signup' element={<SignUp/>} />
 
             {/* protected layout */}
-            <Route element={<ProtectedLayout />}>
+            <Route element={<ProtectedLayout/>}>
                 <Route path='/dashboard' element={<Dashboard/>} />
             </Route>
         </Routes>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router';
-import { getToken } from '../services/tokenService';
+import { getToken } from './tokenService';
 
 const withAuth = (Component) => {
     return (props) => {

@@ -4,7 +4,7 @@ import { AuthLink } from "./AuthLink";
 import { AuthButton } from "./AuthButton";
 import { loginUser } from "../../services/Auth";
 import { useNavigate } from "react-router";
-import { getToken, saveToken } from "../../services/tokenService";
+import { saveToken } from "../../auth/tokenService";
 
 export function SignInForm(){
 
@@ -18,10 +18,7 @@ export function SignInForm(){
             }
             if(response.data){
               const token = response.data.token;
-
               saveToken(token);
-              // console.log(getToken())
-
               navigate('/dashboard')
             }
           }}

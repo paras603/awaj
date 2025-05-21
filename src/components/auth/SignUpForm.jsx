@@ -3,7 +3,7 @@ import { AuthButton } from "./AuthButton";
 import { AuthInputField } from "./AuthInputField";
 import { AuthLabel } from "./AuthLabel";
 import { useNavigate } from "react-router";
-import { saveToken } from "../../services/tokenService"
+import { saveToken } from "../../auth/tokenService";
 
 export function SignUpForm(){
     const navigate = useNavigate();

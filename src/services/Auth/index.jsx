@@ -1,4 +1,4 @@
-import { getToken } from "../tokenService";
+import { getToken } from "../../auth/tokenService";
 
 export async function registerUser(formData) {
     try{
