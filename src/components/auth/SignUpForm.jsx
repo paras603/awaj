@@ -2,8 +2,11 @@ import { registerUser } from "../../services/Auth";
 import { AuthButton } from "./AuthButton";
 import { AuthInputField } from "./AuthInputField";
 import { AuthLabel } from "./AuthLabel";
+import { useNavigate } from "react-router";
+import { saveToken } from "../../services/tokenService"
 
 export function SignUpForm(){
+    const navigate = useNavigate();
     return (
         <form className="space-y-6" 
             action={async (formData) => {
@@ -12,7 +15,11 @@ export function SignUpForm(){
                   console.log(response.errors);
               }
               if(response.data){
-                  console.log(response.data,'in sign up form');
+              const token = response.data.token;
+
+              saveToken(token);
+
+              navigate('/dashboard')
               }
             }}
         >

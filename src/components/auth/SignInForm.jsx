@@ -3,8 +3,12 @@ import { AuthInputField } from "./AuthInputField";
 import { AuthLink } from "./AuthLink";
 import { AuthButton } from "./AuthButton";
 import { loginUser } from "../../services/Auth";
+import { useNavigate } from "react-router";
+import { getToken, saveToken } from "../../services/tokenService";
 
 export function SignInForm(){
+
+    const navigate = useNavigate();
     return (
         <form className="space-y-6" 
           action={async (formData) => {
@@ -13,7 +17,12 @@ export function SignInForm(){
               console.log(errors);
             }
             if(response.data){
-              console.log(response.data, 'in sign in form');
+              const token = response.data.token;
+
+              saveToken(token);
+              // console.log(getToken())
+
+              navigate('/dashboard')
             }
           }}
         >
