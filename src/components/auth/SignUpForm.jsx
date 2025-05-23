@@ -1,4 +1,4 @@
-import { registerUser } from "../../services/Auth";
+import { registerUser } from "../../services/auth";
 import { AuthButton } from "./AuthButton";
 import { AuthInputField } from "./AuthInputField";
 import { AuthLabel } from "./AuthLabel";

@@ -1,6 +1,12 @@
+import { Outlet } from "react-router";
 import withAuth from "../../auth/withAuth.jsx";
-import Dashboard from "../../pages/dashboard";
 
-const ProtectedLayout = withAuth(Dashboard);
+function ProtectedLayout(){
+    return(
+        <div>
+            <Outlet/>
+        </div>
+    )
+}
 
-export default ProtectedLayout;
+export default withAuth(ProtectedLayout);

@@ -1,17 +1,17 @@
-import { getToken } from "../../auth/tokenService";
+import { getToken } from "../auth/tokenService";
 
-export async function registerUser(formData) {
+export async function getUserPosts(){
     try{
         const response = await fetch(
-            "http://awaj.test/api/register",
+            "http://awaj.test/api/posts",
             {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
+                method: "GET",
+                headers:{
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${getToken()}`
                 },
-                body: formData,
             }
-        );
+        )
 
         if(!response.ok){
             const errorData = await response.json();
@@ -21,20 +21,47 @@ export async function registerUser(formData) {
         const data = await response.json();
         return data;
 
+    }catch (error){
+        console.log(error);
+        return error;
+    }
+}
+
+export async function getAllPosts(){
+    try{
+        const response = await fetch(
+            "http://awaj.test/api/allPosts",
+            {
+                method: "GET",
+                headers:{
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${getToken()}`
+                },
+            }
+        )
+
+        if(!response.ok){
+            const errorData = await response.json();
+            return errorData;
+        }
+
+        const data = await response.json();
+        return data;
     }catch(error){
         console.log(error);
         return error;
     }
 }
 
-export async function loginUser(formData) {
+export async function createPost(formData){
     try{
         const response = await fetch(
-            "http://awaj.test/api/login",
+            "http://awaj.test/api/posts",
             {
                 method: "POST",
                 headers: {
-                    Accept: "application/json",
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${getToken()}`
                 },
                 body: formData,
             },
@@ -42,36 +69,11 @@ export async function loginUser(formData) {
 
         if(!response.ok){
             const errorData = await response.json();
-            throw errorData;
+            return errorData;
         }
 
         const data = await response.json();
         return data;
-    }catch(error){
-        console.log(error);
-        return error;
-    }
-}
-
-export async function logoutUser(){
-    try{
-        const response = await fetch(
-            "http://awaj.test/api/logout",
-            {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${getToken()}`
-                },
-            }
-        );
-
-        if(!response.ok){
-            const errorData = await response.json();
-            throw errorData;
-        }
-
-        return response;
     }catch(error){
         console.log(error);
         return error;

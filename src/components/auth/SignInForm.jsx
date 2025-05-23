@@ -2,7 +2,7 @@ import { AuthLabel } from "./AuthLabel";
 import { AuthInputField } from "./AuthInputField";
 import { AuthLink } from "./AuthLink";
 import { AuthButton } from "./AuthButton";
-import { loginUser } from "../../services/Auth";
+import { loginUser } from "../../services/auth";
 import { useNavigate } from "react-router";
 import { saveToken } from "../../auth/tokenService";
 
