@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createPost, getAllPosts, getUserPosts } from "../services/posts";
 import { Card } from "./ui/Card";
+import { toast, ToastContainer } from "react-toastify";
 
 export function Main(){
   const [posts, setPosts] = useState([]);
@@ -30,10 +31,12 @@ export function Main(){
             action={async (formData) => {
               const response = await createPost(formData);
               if(response.errors){
-                console.log(errors);
+                console.log(response.message);
+                toast.error(response.message);
               }
               if(response.data){
                 console.log(response.data);
+                toast.success('successfully posted')
               }
             }}
           >
@@ -65,8 +68,8 @@ export function Main(){
         ) : (
           <ul className="space-y-4">
             {posts.map((post) => (
-              <Card>
-                <li key={post.id} >
+              <Card key={post.id}>
+                <li>
                   <h2 className="text-xl font-semibold">{post.relationships.user_name}</h2>
                   <p className="text-gray-700">{post.attributes.content}</p>
                 </li>
@@ -75,6 +78,7 @@ export function Main(){
           </ul>
         )}
       </div>
+      <ToastContainer/>
     </main>
   );
 }
