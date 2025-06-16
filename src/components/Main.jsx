@@ -4,47 +4,47 @@ import { Card } from "./ui/Card";
 import { toast, ToastContainer } from "react-toastify";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/16/solid";
 
-export function Main(){
+export function Main() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    async function fetchPosts(){
+    async function fetchPosts() {
       const response = await getAllPosts();
       setPosts(response.data);
       setLoading(false);
     }
 
     fetchPosts();
-
   }, []);
 
-  if(loading) return <p className="text-gray-500">Loading posts...</p>;
-
+  if (loading) return <p className="text-gray-500">Loading posts...</p>;
 
   return (
-    <main>
-      <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6 lg:px-8 ">
+    <main className="bg-gray-900 p-4 sm:p-6 md:p-8 lg:p-10">
+      <div className="mx-auto max-w-2xl py-6 rounded-md bg-gray-800 border-white/20">
         <Card>
-          <form 
+          <form
             className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800"
             action={async (formData) => {
               const response = await createPost(formData);
-              if(response.errors){
+              if (response.errors) {
                 console.log(response.message);
                 toast.error(response.message);
               }
-              if(response.data){
+              if (response.data) {
                 console.log(response.data);
-                toast.success('successfully posted')
+                toast.success("successfully posted");
                 const refreshed = await getAllPosts();
-                setPosts(refreshed.data)
+                setPosts(refreshed.data);
               }
             }}
           >
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Share your thoughts</h2>
-            
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+              Share your thoughts
+            </h2>
+
             <div className="mb-4">
               {/* <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                 Your Message
@@ -78,30 +78,73 @@ export function Main(){
           <p>No posts to show</p>
         ) : (
           <ul className="space-y-4">
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <li key={post.id}>
+                <hr className="border-t border-white/20 my-4" />
                 <Card>
                   <div className="flex flex-row space-x-5">
                     <div className="flex flex-col items-center">
-                      <ArrowUpIcon className="size-6 cursor-pointer" aria-label="Upvote" />
-                      <span className={`text-medium font-medium ${post.attributes.upvote - post.attributes.downvote >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <ArrowUpIcon
+                        className="size-6 cursor-pointer"
+                        aria-label="Upvote"
+                      />
+                      <span
+                        className={`text-medium font-medium ${
+                          post.attributes.upvote - post.attributes.downvote >= 0
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
                         {post.attributes.upvote - post.attributes.downvote}
                       </span>
-                      <ArrowDownIcon className="size-6 cursor-pointer" aria-label="Downvote" />
+                      <ArrowDownIcon
+                        className="size-6 cursor-pointer"
+                        aria-label="Downvote"
+                      />
                     </div>
                     <div>
-                      <h2 className="text-xl font-semibold">{post.relationships.user_name}</h2>
+                      <h2 className="text-xl font-semibold">
+                        {post.relationships.user_name}
+                      </h2>
                       <p className="text-gray-700">{post.attributes.content}</p>
                     </div>
                   </div>
+                  {post.comments.length > 0 &&
+                    post.comments.map((comment, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-row space-x-5 mt-2 p-2"
+                      >
+                        <div>
+                          <img
+                            src="src/assets/profile.png"
+                            alt="user profile"
+                            className="w-7 h-7 rounded-full"
+                          />
+                        </div>
+                        <div className="flex flex-col text-xs ">
+                          <div className="font-bold">
+                            <p>{comment.user.user_name}</p>
+                          </div>
+                          <div>
+                            <p className="w-full">
+                              {comment.attributes.comment}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                 </Card>
+                {/* Divider */}
+                {/* {index < posts.length - 1 && (
+                  <hr className="border-t border-white/20 my-4" />
+                )} */}
               </li>
             ))}
           </ul>
         )}
-        
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </main>
   );
 }
