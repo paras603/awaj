@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { createPost, getAllPosts, getUserPosts } from "../services/posts";
+import { createPost, getAllPosts } from "../services/posts";
 import { Card } from "./ui/Card";
 import { toast, ToastContainer } from "react-toastify";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/16/solid";
+import { CreatePostModal } from "./CreatePostModal";
 
 export function Main() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [content, setContent] = useState("");
+  const [openPostModal, setOpenPostModal] = useState(false);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -23,56 +24,27 @@ export function Main() {
 
   return (
     <main className="bg-gray-900 p-4 sm:p-6 md:p-8 lg:p-10">
-      <div className="mx-auto max-w-2xl py-6 rounded-md bg-gray-800 border-white/20">
+      <div className="mx-auto max-w-2xl py-6 rounded-md border-white/20 bg-gray-800">
         <Card>
-          <form
-            className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800"
-            action={async (formData) => {
-              const response = await createPost(formData);
-              if (response.errors) {
-                console.log(response.message);
-                toast.error(response.message);
-              }
-              if (response.data) {
-                console.log(response.data);
-                toast.success("successfully posted");
-                const refreshed = await getAllPosts();
-                setPosts(refreshed.data);
-              }
-            }}
+          <div
+            className="flex flex-row space-x-4"
+            onClick={() => setOpenPostModal(true)}
           >
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
-              Share your thoughts
-            </h2>
-
-            <div className="mb-4">
-              {/* <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                Your Message
-              </label> */}
-              <textarea
-                id="message"
-                rows="5"
-                name="content"
-                onChange={(e) => setContent(e.target.value)}
-                className="block w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Write your thoughts here..."
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              disabled={content.trim() === ""}
-              className={`w-full px-6 py-2.5 text-white font-medium rounded-lg text-sm focus:outline-none
-                ${
-                  content.trim() === ""
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
-                }`}
-            >
+            <p className="cursor-text block w-full p-3 text-sm text-gray-500 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              Share your thoughts...
+            </p>
+            <button className="px-6 text-white font-medium rounded-lg text-sm focus:outline-none border cursor-pointer">
               Post
             </button>
-          </form>
+          </div>
         </Card>
+        {openPostModal && (
+          <CreatePostModal
+            openPostModal={openPostModal}
+            setOpenPostModal={setOpenPostModal}
+            setPosts={setPosts}
+          />
+        )}
 
         {posts.length === 0 ? (
           <p>No posts to show</p>
@@ -106,7 +78,7 @@ export function Main() {
                       <h2 className="text-xl font-semibold">
                         {post.relationships.user_name}
                       </h2>
-                      <p className="text-gray-700">{post.attributes.content}</p>
+                      <p className="text-gray-300">{post.attributes.content}</p>
                     </div>
                   </div>
                   {post.comments.length > 0 &&
@@ -135,10 +107,6 @@ export function Main() {
                       </div>
                     ))}
                 </Card>
-                {/* Divider */}
-                {/* {index < posts.length - 1 && (
-                  <hr className="border-t border-white/20 my-4" />
-                )} */}
               </li>
             ))}
           </ul>
