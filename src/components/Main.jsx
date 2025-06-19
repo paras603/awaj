@@ -1,25 +1,13 @@
 import { useEffect, useState } from "react";
-import { createPost, getAllPosts } from "../services/posts";
 import { Card } from "./ui/Card";
 import { toast, ToastContainer } from "react-toastify";
 import { CreatePostModal } from "./CreatePostModal";
-import { UpvoteOutlineIcon } from "./ui/UpvoteOutlineIcon.jsx";
-import { DownVoteOutlineIcon } from "./ui/DownVoteOutlineIcon.jsx";
+import { usePosts } from "../hooks/usePosts.jsx";
+import { PostItem } from "./PostItem.jsx";
 
 export function Main() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [openPostModal, setOpenPostModal] = useState(false);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      const response = await getAllPosts();
-      setPosts(response.data);
-      setLoading(false);
-    }
-
-    fetchPosts();
-  }, []);
+  const { posts, setPosts, loading } = usePosts();
 
   if (loading) return <p className="text-gray-500">Loading posts...</p>;
 
@@ -39,7 +27,7 @@ export function Main() {
             <p className="cursor-text block w-full p-3 text-sm text-gray-500 bg-gray-800">
               Share your thoughts...
             </p>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition cursor-pointer">
               Post
             </button>
           </div>
@@ -57,51 +45,8 @@ export function Main() {
           <p>No posts to show</p>
         ) : (
           <ul className="space-y-4">
-            {posts.map((post, index) => (
-              <li key={post.id}>
-                <hr className="border-t border-white/20 my-4" />
-                <Card>
-                  <div className="flex flex-row space-x-5">
-                    <div className="flex flex-col items-center text-gray-400">
-                      <UpvoteOutlineIcon />
-                      <span className="font-semibold text-sm text-gray-500">
-                        {post.attributes.upvote - post.attributes.downvote}
-                      </span>
-                      <DownVoteOutlineIcon />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2">
-                        <h2 className="text-lg font-semibold text-white">
-                          {post.relationships.user_name}
-                        </h2>
-                        <span className="text-xs text-gray-400">· 2h ago</span>
-                      </div>
-                      <p className="text-gray-300 mt-1">
-                        {post.attributes.content}
-                      </p>
-                    </div>
-                  </div>
-
-                  {post.comments.length > 0 &&
-                    post.comments.map((comment, index) => (
-                      <div key={index} className="flex space-x-5 mt-4 ml-10">
-                        <img
-                          src="src/assets/profile.png"
-                          alt="user profile"
-                          className="w-6 h-6 rounded-full"
-                        />
-                        <div className="bg-gray-700 p-2 rounded-lg text-sm text-gray-100 w-full">
-                          <div className="font-semibold text-xs text-blue-400 mb-1">
-                            <p>{comment.user.user_name}</p>
-                          </div>
-                          <div>
-                            <p>{comment.attributes.comment}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                </Card>
-              </li>
+            {posts.map((post) => (
+              <PostItem key={post.id} post={post} />
             ))}
           </ul>
         )}
