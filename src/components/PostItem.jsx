@@ -1,7 +1,7 @@
 import { Card } from "./ui/Card.jsx";
 import { UpvoteOutlineIcon } from "./ui/UpvoteOutlineIcon.jsx";
 import { DownVoteOutlineIcon } from "./ui/DownVoteOutlineIcon.jsx";
-import { getVoteScore } from "../utils/posts.js";
+import { getVoteScore, formatPostDate } from "../utils/posts.js";
 
 export function PostItem({ post }) {
   return (
@@ -21,7 +21,9 @@ export function PostItem({ post }) {
               <h2 className="text-lg font-semibold text-white">
                 {post.relationships.user_name}
               </h2>
-              <span className="text-xs text-gray-400">· 2h ago</span>
+              <span className="text-xs text-gray-400">
+                · {formatPostDate(post.attributes.created_at)}
+              </span>
             </div>
             <p className="text-gray-300 mt-1">{post.attributes.content}</p>
           </div>

@@ -4,7 +4,11 @@ import { toast, ToastContainer } from "react-toastify";
 import { Spinner } from "./ui/Spinner.jsx";
 import { CloseIcon } from "./ui/CloseIcon.jsx";
 
-export function CreatePostModal({ openPostModal, setOpenPostModal, setPosts }) {
+export function CreatePostModal({
+  openPostModal,
+  setOpenPostModal,
+  onPostCreated,
+}) {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,17 +34,11 @@ export function CreatePostModal({ openPostModal, setOpenPostModal, setPosts }) {
         return;
       }
       if (response.data) {
+        const newPost = response.data;
+        onPostCreated(newPost);
         toast.success("successfully posted");
-
-        const refreshed = await getAllPosts();
-        if (refreshed.errors) {
-          toast.error(refreshed.message);
-        } else {
-          setPosts(refreshed.data);
-        }
         setOpenPostModal(false);
         setContent("");
-        setLoading(false);
       }
     } catch (e) {
       toast.error("Something went wrong!");
@@ -51,13 +49,13 @@ export function CreatePostModal({ openPostModal, setOpenPostModal, setPosts }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-[1px] transition-opacity "
       onClick={() => setOpenPostModal(false)}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 mx-4 transform transition-all scale-100"
+        className="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-2xl w-full p-6 mx-4 transform transition-all scale-100 border border-white/20"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4">

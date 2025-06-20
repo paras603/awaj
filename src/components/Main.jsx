@@ -9,6 +9,10 @@ export function Main() {
   const [openPostModal, setOpenPostModal] = useState(false);
   const { posts, setPosts, loading } = usePosts();
 
+  function handlePostCreated(newPost) {
+    setPosts((prev) => [newPost, ...prev]);
+  }
+
   if (loading) return <p className="text-gray-500">Loading posts...</p>;
 
   return (
@@ -37,7 +41,7 @@ export function Main() {
           <CreatePostModal
             openPostModal={openPostModal}
             setOpenPostModal={setOpenPostModal}
-            setPosts={setPosts}
+            onPostCreated={handlePostCreated}
           />
         )}
 
