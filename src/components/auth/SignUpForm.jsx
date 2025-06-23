@@ -4,9 +4,11 @@ import { AuthInputField } from "./AuthInputField";
 import { AuthLabel } from "./AuthLabel";
 import { useNavigate } from "react-router";
 import { saveToken } from "../../auth/tokenService";
+import { useAuth } from "../../context/AuthContext";
 
 export function SignUpForm(){
     const navigate = useNavigate();
+    const {login} = useAuth();
     return (
         <form className="space-y-6" 
             action={async (formData) => {
@@ -15,9 +17,8 @@ export function SignUpForm(){
                   console.log(response.errors);
               }
               if(response.data){
-              const token = response.data.token;
-
-              saveToken(token);
+              const {token, user} = response.data;
+              login(user, token);
 
               navigate('/dashboard')
               }

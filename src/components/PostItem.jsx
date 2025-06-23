@@ -1,20 +1,41 @@
 import { Card } from "./ui/Card.jsx";
 import { UpvoteOutlineIcon } from "./ui/UpvoteOutlineIcon.jsx";
 import { DownVoteOutlineIcon } from "./ui/DownVoteOutlineIcon.jsx";
+import { UpvoteFilledIcon } from "./ui/UpvoteFilledIcon.jsx";
+import { DownVoteFilledIcon } from "./ui/DownVoteFilledIcon.jsx"
 import { getVoteScore, formatPostDate } from "../utils/posts.js";
+import { useAuth } from "../context/AuthContext.jsx";
+import { useEffect } from "react";
+
 
 export function PostItem({ post }) {
+  const {authUser} = useAuth();
+
+  const userInteraction = post.userInteractions?.find(
+    (interaction) => String(interaction.user_id) === String(authUser.id)
+  );
+
+  const voteStatus = userInteraction?.attributes.vote_status;
+
   return (
+    
     <li>
       <hr className="border-t border-white/20 my-4" />
       <Card>
         <div className="flex flex-row space-x-5">
           <div className="flex flex-col items-center text-gray-400">
-            <UpvoteOutlineIcon />
+            <div onClick={()=>alert('upvoted')}>
+              {voteStatus === '1' ? <UpvoteFilledIcon /> : <UpvoteOutlineIcon   />}
+            </div>
+            
             <span className="font-semibold text-sm text-gray-500">
               {getVoteScore(post)}
             </span>
-            <DownVoteOutlineIcon />
+
+            <div onClick={()=>alert('downvoted')}>
+              {voteStatus === '-1' ? <DownVoteFilledIcon onClick={()=>alert('clicked')}  /> : <DownVoteOutlineIcon onClick={()=>alert('clicked')}  />}
+            </div>
+    
           </div>
           <div className="flex-1">
             <div className="flex items-center space-x-2">
