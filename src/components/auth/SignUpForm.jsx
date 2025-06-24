@@ -3,7 +3,6 @@ import { AuthButton } from "./AuthButton";
 import { AuthInputField } from "./AuthInputField";
 import { AuthLabel } from "./AuthLabel";
 import { useNavigate } from "react-router";
-import { saveToken } from "../../auth/tokenService";
 import { useAuth } from "../../context/AuthContext";
 
 export function SignUpForm(){

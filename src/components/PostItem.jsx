@@ -5,7 +5,7 @@ import { UpvoteFilledIcon } from "./ui/UpvoteFilledIcon.jsx";
 import { DownVoteFilledIcon } from "./ui/DownVoteFilledIcon.jsx"
 import { getVoteScore, formatPostDate } from "../utils/posts.js";
 import { useAuth } from "../context/AuthContext.jsx";
-import { useEffect } from "react";
+import { createInteraction, upvotePost, downvotePost, removeVote } from "../services/interaction.js";
 
 
 export function PostItem({ post }) {
@@ -17,6 +17,64 @@ export function PostItem({ post }) {
 
   const voteStatus = userInteraction?.attributes.vote_status;
 
+  const handleUpvote = () => {
+    console.log("post:", post)
+    console.log("voteStatus:", voteStatus)
+    // if voteStatus is undefined call fetch createInteraction and createInteraction with voteStatus 1
+    // else if voteStatus is 1 call patch and change to 0
+    // else if voteStatus is 0 or -1 then
+    // call pathch and update to 1
+    if (voteStatus === undefined){
+       createInteraction(
+        {
+          "post_id": (post.id),
+          "user_id": (authUser.id), 
+          "voteStatus": "1",
+        }
+      )
+    }else if(voteStatus === "1"){
+      removeVote(
+          (authUser.id), 
+          (post.id),
+      )
+    }else{
+      upvotePost(
+          (authUser.id), 
+          (post.id),
+      )
+    }
+  }
+
+  const handleDownvote = () => {
+       console.log("post:",post)
+    console.log("voteStatus:", voteStatus)
+        // if voteStatus is undefined call fetch createInteraction and createInteraction with voteStatus -1
+    // else if voteStatus is -1 call patch and change to 0
+    // else if voteStatus is 0 or 1 then
+    // call pathch and update to -1
+
+        if (voteStatus === undefined){
+       createInteraction(
+        {
+          "post_id": (post.id),
+          "user_id": (authUser.id), 
+          "voteStatus": "-1",
+        }
+      )
+    }else if(voteStatus === "-1"){
+      removeVote(
+          (authUser.id), 
+          (post.id),
+      )
+    }else{
+      downvotePost(
+          (authUser.id), 
+          (post.id),
+      )
+    }
+  }
+
+
   return (
     
     <li>
@@ -24,7 +82,7 @@ export function PostItem({ post }) {
       <Card>
         <div className="flex flex-row space-x-5">
           <div className="flex flex-col items-center text-gray-400">
-            <div onClick={()=>alert('upvoted')}>
+            <div onClick={handleUpvote}>
               {voteStatus === '1' ? <UpvoteFilledIcon /> : <UpvoteOutlineIcon   />}
             </div>
             
@@ -32,8 +90,8 @@ export function PostItem({ post }) {
               {getVoteScore(post)}
             </span>
 
-            <div onClick={()=>alert('downvoted')}>
-              {voteStatus === '-1' ? <DownVoteFilledIcon onClick={()=>alert('clicked')}  /> : <DownVoteOutlineIcon onClick={()=>alert('clicked')}  />}
+            <div onClick={handleDownvote}>
+              {voteStatus === '-1' ? <DownVoteFilledIcon /> : <DownVoteOutlineIcon />}
             </div>
     
           </div>

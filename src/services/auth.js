@@ -1,9 +1,10 @@
 import { getToken } from "../auth/tokenService";
+import { API_BASE } from "../config/apiConfig";
 
 export async function registerUser(formData) {
     try{
         const response = await fetch(
-            "http://awaj.test/api/register",
+                `${API_BASE}/register`,
             {
                 method: "POST",
                 headers: {
@@ -30,7 +31,7 @@ export async function registerUser(formData) {
 export async function loginUser(formData) {
     try{
         const response = await fetch(
-            "http://awaj.test/api/login",
+            `${API_BASE}/login`,
             {
                 method: "POST",
                 headers: {
@@ -56,7 +57,7 @@ export async function loginUser(formData) {
 export async function logoutUser(){
     try{
         const response = await fetch(
-            "http://awaj.test/api/logout",
+            `${API_BASE}/logout`,
             {
                 method: "POST",
                 headers: {
