@@ -5,74 +5,14 @@ import { UpvoteFilledIcon } from "./ui/UpvoteFilledIcon.jsx";
 import { DownVoteFilledIcon } from "./ui/DownVoteFilledIcon.jsx"
 import { getVoteScore, formatPostDate } from "../utils/posts.js";
 import { useAuth } from "../context/AuthContext.jsx";
-import { createInteraction, upvotePost, downvotePost, removeVote } from "../services/interaction.js";
+import { useState } from 'react';
+import { usePostVoting } from "../hooks/usePostVoting.js";
 
 
 export function PostItem({ post }) {
   const {authUser} = useAuth();
 
-  const userInteraction = post.userInteractions?.find(
-    (interaction) => String(interaction.user_id) === String(authUser.id)
-  );
-
-  const voteStatus = userInteraction?.attributes.vote_status;
-
-  const handleUpvote = () => {
-    console.log("post:", post)
-    console.log("voteStatus:", voteStatus)
-    // if voteStatus is undefined call fetch createInteraction and createInteraction with voteStatus 1
-    // else if voteStatus is 1 call patch and change to 0
-    // else if voteStatus is 0 or -1 then
-    // call pathch and update to 1
-    if (voteStatus === undefined){
-       createInteraction(
-        {
-          "post_id": (post.id),
-          "user_id": (authUser.id), 
-          "voteStatus": "1",
-        }
-      )
-    }else if(voteStatus === "1"){
-      removeVote(
-          (authUser.id), 
-          (post.id),
-      )
-    }else{
-      upvotePost(
-          (authUser.id), 
-          (post.id),
-      )
-    }
-  }
-
-  const handleDownvote = () => {
-       console.log("post:",post)
-    console.log("voteStatus:", voteStatus)
-        // if voteStatus is undefined call fetch createInteraction and createInteraction with voteStatus -1
-    // else if voteStatus is -1 call patch and change to 0
-    // else if voteStatus is 0 or 1 then
-    // call pathch and update to -1
-
-        if (voteStatus === undefined){
-       createInteraction(
-        {
-          "post_id": (post.id),
-          "user_id": (authUser.id), 
-          "voteStatus": "-1",
-        }
-      )
-    }else if(voteStatus === "-1"){
-      removeVote(
-          (authUser.id), 
-          (post.id),
-      )
-    }else{
-      downvotePost(
-          (authUser.id), 
-          (post.id),
-      )
-    }
-  }
+  const { localVoteScore, localVoteStatus, handleUpvote, handleDownvote } = usePostVoting(post, authUser);
 
 
   return (
@@ -83,15 +23,15 @@ export function PostItem({ post }) {
         <div className="flex flex-row space-x-5">
           <div className="flex flex-col items-center text-gray-400">
             <div onClick={handleUpvote}>
-              {voteStatus === '1' ? <UpvoteFilledIcon /> : <UpvoteOutlineIcon   />}
+              {localVoteStatus === '1' ? <UpvoteFilledIcon /> : <UpvoteOutlineIcon   />}
             </div>
             
             <span className="font-semibold text-sm text-gray-500">
-              {getVoteScore(post)}
+              {localVoteScore}
             </span>
 
             <div onClick={handleDownvote}>
-              {voteStatus === '-1' ? <DownVoteFilledIcon /> : <DownVoteOutlineIcon />}
+              {localVoteStatus === '-1' ? <DownVoteFilledIcon /> : <DownVoteOutlineIcon />}
             </div>
     
           </div>

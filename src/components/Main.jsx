@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card } from "./ui/Card";
 import { toast, ToastContainer } from "react-toastify";
 import { CreatePostModal } from "./CreatePostModal";
-import { usePosts } from "../hooks/usePosts.jsx";
+import { usePosts } from "../hooks/usePosts";
 import { PostItem } from "./PostItem.jsx";
 
 export function Main() {
