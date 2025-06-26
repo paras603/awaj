@@ -12,8 +12,7 @@ import { usePostVoting } from "../hooks/usePostVoting.js";
 export function PostItem({ post }) {
   const {authUser} = useAuth();
 
-  const { localVoteScore, localVoteStatus, handleUpvote, handleDownvote } = usePostVoting(post, authUser);
-
+  const { localVoteScore, localVoteStatus, handleUpvote, handleDownvote } = usePostVoting({post, authUser});
 
   return (
     

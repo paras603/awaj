@@ -4,6 +4,7 @@ import { getVoteScore } from "../utils/posts.js";
 
 export function usePostVoting({post, authUser}) {
     const [ localVoteStatus, setLocalVoteStatus ] = useState(() => {
+        console.log(post);
     const userInteraction = post.userInteractions?.find(
       (interaction) => String(interaction.user_id) === String(authUser.id)
     );
