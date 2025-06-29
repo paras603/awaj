@@ -1,6 +1,30 @@
 import { getToken } from "../auth/tokenService";
 import { API_BASE } from "../config/apiConfig";
 
+export async function getPost(id){
+  try{
+    const response = await fetch(`${API_BASE}/posts/${id}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData;
+    }
+
+    const data = await response.json();
+    console.log('response data:', data)
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
 export async function getUserPosts() {
   try {
     const response = await fetch(`${API_BASE}/posts`, {

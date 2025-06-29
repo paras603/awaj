@@ -10,7 +10,6 @@ export function usePosts() {
       try {
         const response = await getAllPosts();
         setPosts(response.data);
-        console.log(response.data)
       } catch (error) {
         console.log("Failed to fetch posts", error);
       } finally {

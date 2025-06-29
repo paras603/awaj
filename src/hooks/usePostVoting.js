@@ -4,7 +4,6 @@ import { getVoteScore } from "../utils/posts.js";
 
 export function usePostVoting({post, authUser}) {
     const [ localVoteStatus, setLocalVoteStatus ] = useState(() => {
-        console.log(post);
     const userInteraction = post.userInteractions?.find(
       (interaction) => String(interaction.user_id) === String(authUser.id)
     );
@@ -51,7 +50,7 @@ export function usePostVoting({post, authUser}) {
     }else if(localVoteStatus === "-1"){
       await removeVote(authUser.id, post.id);
       setLocalVoteStatus("0");
-      setLocalVoteScore(prev => prev - 1);
+      setLocalVoteScore(prev => prev + 1);
     }else{
       await downvotePost(authUser.id, post.id);
       setLocalVoteStatus("-1");

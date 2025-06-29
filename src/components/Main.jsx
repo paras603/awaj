@@ -3,7 +3,7 @@ import { Card } from "./ui/Card";
 import { toast, ToastContainer } from "react-toastify";
 import { CreatePostModal } from "./CreatePostModal";
 import { usePosts } from "../hooks/usePosts";
-import { PostItem } from "./PostItem.jsx";
+import { PostItem } from "./features/posts/PostItem";
 
 export function Main() {
   const [openPostModal, setOpenPostModal] = useState(false);
