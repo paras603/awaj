@@ -39,7 +39,7 @@ export function PostItem({ post, isClickable=true }) {
   return (
     <>
       <li className="list-none">
-        <hr className="border-t border-white/20 my-6" />
+        {/* Remove this hr here, move to container if needed */}
         <Card className="hover:bg-white/5 transition-colors duration-200">
           <div className="flex flex-row space-x-4">
             <Votes post={post} authUser={authUser} />
@@ -83,26 +83,21 @@ export function PostItem({ post, isClickable=true }) {
                   <BookmarkIcon />
                   <span>0</span>
                 </div>
-                {/* <div className="flex items-center space-x-1 hover:text-white transition-colors">
-                  <ShareIcon />
-                  <span>0</span>
-                </div> */}
               </div>
             </div>
           </div>
         </Card>
       </li>
       {openCommentModal && (
-      <CreateCommentModal
-        onClose={() => setOpenPostModal(false)}
-        post={post}
-        onSubmit={(newComment) => {
-          // Optional: send to backend or update state
-          console.log("Comment submitted:", newComment);
-        }}
-      />
-)}
-
+        <CreateCommentModal
+          onClose={() => setOpenPostModal(false)}
+          post={post}
+          onSubmit={(newComment) => {
+            console.log("Comment submitted:", newComment);
+          }}
+        />
+      )}
     </>
+
   );
 }

@@ -53,16 +53,6 @@ export function CreateCommentModal({ onClose, onSubmit, post }) {
             post={post}
             isClickable={false}
         />
-
-        {post.comments.length > 0 ? (
-            <ul className="space-y-4">
-                {post.comments.map((comment) => (
-                    <CommentItem key={comment.id} comment={comment} />
-                ))}
-            </ul>
-        ) : (
-            <p className="text-gray-400 text-sm text-center">No comments yet.</p>
-        )}
         
         <form onSubmit={handleSubmit} className="pt-4">
           <textarea
