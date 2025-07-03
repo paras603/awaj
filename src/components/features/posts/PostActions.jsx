@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CommentIcon } from "../../ui/CommentIcon";
 import { BookmarkIcon } from "../../ui/BookmarkIcon";
 import { CreateCommentModal } from "../comments/CreateCommentModal";
@@ -10,6 +10,20 @@ export function PostActions({post}){
     const handleCommentClick = () => {
         setOpenCommentModal(true);
     }
+
+      // 🔒 Lock body scroll when modal is open
+    useEffect(() => {
+        if (openCommentModal) {
+        document.body.classList.add("overflow-hidden");
+        } else {
+        document.body.classList.remove("overflow-hidden");
+        }
+
+        // Ensure scroll is unlocked if component unmounts
+        return () => {
+        document.body.classList.remove("overflow-hidden");
+        };
+    }, [openCommentModal]);
 
     return (
         <>
