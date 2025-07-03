@@ -80,36 +80,37 @@ useEffect(() => {
                     </div>
                 </div>
                 <div 
-                ref={scrollRef}
-                className="h-[80vh] overflow-y-auto rounded-xl border border-white/10 bg-gray-800 shadow-lg relative">
-    {/* content here */}
-        {/* Top edge glow effect when scrolled */}
-    {scrolled && (
-        <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white/10 to-transparent rounded-t-xl pointer-events-none z-10" />
-    )}
-                <div className=" py-8 px-8 sm:px-10 rounded-xl border border-white/10 bg-gray-800 shadow-lg relative">
+                    ref={scrollRef}
+                    className="h-[80vh] overflow-y-auto rounded-xl border border-white/10 bg-gray-800 shadow-lg relative"
+                >
+                    {/* content here */}
+                        {/* Top edge glow effect when scrolled */}
+                    {scrolled && (
+                        <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white/10 to-transparent rounded-t-xl pointer-events-none z-10" />
+                    )}
+                    <div className=" py-8 px-8 sm:px-10 rounded-xl relative">
 
-                    <PostItem post={post} isClickable={false} />
+                        <PostItem post={post} isClickable={false} />
 
-                    <div className="mt-6">
-                        <div className="flex items-center mb-6">
-                            <CommentIcon className="w-5 h-5 text-gray-300 mr-2" />
-                            <h3 className="text-lg font-semibold text-white">Comments</h3>
-                            <span className="ml-2 text-gray-400 text-sm">({post.comments.length})</span>
+                        <div className="mt-6">
+                            <div className="flex items-center mb-6">
+                                <CommentIcon className="w-5 h-5 text-gray-300 mr-2" />
+                                <h3 className="text-lg font-semibold text-white">Comments</h3>
+                                <span className="ml-2 text-gray-400 text-sm">({post.comments.length})</span>
+                            </div>
+
+                            {(post.comments?.length || 0) > 0 ? (
+                                <ul className="space-y-4">
+                                    {post.comments.map((comment) => (
+                                        <CommentItem key={comment.id} comment={comment} />
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-gray-400 text-sm text-center">No comments yet.</p>
+                            )}
                         </div>
-
-                        {post.comments.length > 0 ? (
-                            <ul className="space-y-4">
-                                {post.comments.map((comment) => (
-                                    <CommentItem key={comment.id} comment={comment} />
-                                ))}
-                            </ul>
-                        ) : (
-                            <p className="text-gray-400 text-sm text-center">No comments yet.</p>
-                        )}
                     </div>
                 </div>
-</div>
 
             </div>
         </main>

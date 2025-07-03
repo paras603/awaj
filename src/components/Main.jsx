@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { CreatePostModal } from "./CreatePostModal";
 import { usePosts } from "../hooks/usePosts";
 import { PostItem } from "./features/posts/PostItem";
+import { PostActions } from "./features/posts/PostActions";
 
 export function Main() {
   const [openPostModal, setOpenPostModal] = useState(false);
@@ -50,7 +51,10 @@ export function Main() {
         ) : (
           <ul className="space-y-4">
             {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
+              <div key={post.id}>
+                <hr className="border-t border-white/20 my-4" />
+                <PostItem  post={post} />
+              </div>
             ))}
           </ul>
         )}

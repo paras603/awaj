@@ -1,6 +1,4 @@
-import { EllipsisVerticleCircleIcon } from "../../ui/EllipsisVerticleCircleIcon";
-import { CommentIcon } from "../../ui/CommentIcon";
-import { CommentItem } from "./CommentItem";
+import { EllipsisVerticalCircleIcon } from "../../ui/EllipsisVerticalCircleIcon";
 import { useEffect, useRef, useState } from "react";
 import { PostItem } from "../posts/PostItem";
 
@@ -39,19 +37,28 @@ export function CreateCommentModal({ onClose, onSubmit, post }) {
     <div
       className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center backdrop-blur-[1px] transition-opacity"
       onClick={handleOutsideClick}
+      role="dialog"
+      aria-modal="true"
     >
       <div
         className="bg-zinc-900 rounded-lg p-6 w-full max-w-2xl shadow-lg border border-white/20"
         ref={modalRef}
       >
         <div className="flex flex-row justify-between text-white">
-            <h2 className="text-md font-light text-white mb-4">Cancel</h2>
+            <button 
+                type="button"
+                onClick={onClose}
+                className="text-md font-light text-white mb-4 cursor-pointer"
+            >
+                Cancel
+            </button>
             <h2 className="text-md font-semibold text-white mb-4">Reply</h2>
-            <EllipsisVerticleCircleIcon/>
+            <EllipsisVerticalCircleIcon/>
         </div>
         <PostItem
             post={post}
             isClickable={false}
+            hideActions={true}
         />
         
         <form onSubmit={handleSubmit} className="pt-4">
@@ -64,13 +71,6 @@ export function CreateCommentModal({ onClose, onSubmit, post }) {
             autoFocus
           />
           <div className="flex justify-end mt-4 space-x-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-sm bg-zinc-700 hover:bg-zinc-600 text-white rounded"
-            >
-              Cancel
-            </button>
             <button
               type="submit"
               className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded"

@@ -1,18 +1,13 @@
 import { Card } from "../../ui/Card.jsx";
-import { getVoteScore, formatPostDate } from "../../../utils/posts.js";
+import { formatPostDate } from "../../../utils/posts.js";
 import { useAuth } from "../../../context/AuthContext.jsx";
 import { Votes } from "../Votes/Votes.jsx";
 import { useNavigate } from "react-router";
-import { BookmarkIcon } from "../../ui/BookmarkIcon.jsx";
-import { ShareIcon } from "../../ui/ShareIcon.jsx";
-import { CommentIcon } from "../../ui/CommentIcon.jsx";
-import { useState } from "react";
-import { CreateCommentModal } from "../comments/CreateCommentModal.jsx";
+import { PostActions } from "./PostActions.jsx";
 
-export function PostItem({ post, isClickable=true }) {
+export function PostItem({ post, isClickable=true, hideActions=false}) {
   const { authUser } = useAuth();
   const navigate = useNavigate();
-  const [ openCommentModal, setOpenPostModal ] = useState(false);
 
   const handlePostClick = () => {
     if (isClickable){
@@ -25,10 +20,6 @@ export function PostItem({ post, isClickable=true }) {
     alert('user profile page comming soon');
   }
 
-  const handleCommentClick = () => {
-    setOpenPostModal(true);
-  }
-
   const user = {
     name: 'Tom Cook',
     email: 'tom@example.com',
@@ -38,65 +29,45 @@ export function PostItem({ post, isClickable=true }) {
 
   return (
     <>
-      <li className="list-none">
-        {/* Remove this hr here, move to container if needed */}
-        <Card className="hover:bg-white/5 transition-colors duration-200">
-          <div className="flex flex-row space-x-4">
-            <Votes post={post} authUser={authUser} />
-            <div>
-              <div
-                className={`flex-1 ${isClickable ? 'cursor-pointer' : 'cursor-text'}`}
-                onClick={handlePostClick}
-              >
-                {/* User Info */}
-                <div className="flex items-center space-x-3 mb-1">
-                  <img
-                    src={user.imageUrl}
-                    alt={`${post.relationships.user_name}'s profile`}
-                    className="w-9 h-9 rounded-full object-cover cursor-pointer"
-                    onClick={handleUserProfileClick}
-                  />
-                  <h2 
-                    className="text-sm font-medium text-white cursor-pointer hover:underline"
-                    onClick={handleUserProfileClick}
-                  >
-                    {post.relationships.user_name}
-                  </h2>
-                  <span className="text-xs text-gray-400">
-                    · {formatPostDate(post.attributes.created_at)}
-                  </span>
-                </div>
-
-                {/* Post Content */}
-                <p className="text-gray-200 text-[15px] mb-3 leading-snug">
-                  {post.attributes.content}
-                </p>
+      <Card className="hover:bg-white/5 transition-colors duration-200">
+        <div className="flex flex-row space-x-4">
+          <Votes post={post} authUser={authUser} />
+          <div>
+            <div
+              className={`flex-1 ${isClickable ? 'cursor-pointer' : 'cursor-text'}`}
+              onClick={handlePostClick}
+            >
+              {/* User Info */}
+              <div className="flex items-center space-x-3 mb-1">
+                <img
+                  src={user.imageUrl}
+                  alt={`${post.relationships.user_name}'s profile`}
+                  className="w-9 h-9 rounded-full object-cover cursor-pointer"
+                  onClick={handleUserProfileClick}
+                />
+                <h2 
+                  className="text-sm font-medium text-white cursor-pointer hover:underline"
+                  onClick={handleUserProfileClick}
+                >
+                  {post.relationships.user_name}
+                </h2>
+                <span className="text-xs text-gray-400">
+                  · {formatPostDate(post.attributes.created_at)}
+                </span>
               </div>
 
-              {/* Post Actions */}
-              <div className="flex items-center space-x-6 text-gray-400 text-sm">
-                <div className="flex items-center space-x-1 hover:text-white transition-colors cursor-pointer" onClick={handleCommentClick}>
-                  <CommentIcon />
-                  <span>{post.comments.length}</span>
-                </div>
-                <div className="flex items-center space-x-1 hover:text-white transition-colors">
-                  <BookmarkIcon />
-                  <span>0</span>
-                </div>
-              </div>
+              {/* Post Content */}
+              <p className="text-gray-200 text-[15px] mb-3 leading-snug">
+                {post.attributes.content}
+              </p>
             </div>
+
+            {/* Post Actions */}
+            {!hideActions && <PostActions post={post} />}
+
           </div>
-        </Card>
-      </li>
-      {openCommentModal && (
-        <CreateCommentModal
-          onClose={() => setOpenPostModal(false)}
-          post={post}
-          onSubmit={(newComment) => {
-            console.log("Comment submitted:", newComment);
-          }}
-        />
-      )}
+        </div>
+      </Card>
     </>
 
   );
