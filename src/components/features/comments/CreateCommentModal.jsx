@@ -1,9 +1,11 @@
 import { EllipsisVerticalCircleIcon } from "../../ui/EllipsisVerticalCircleIcon";
 import { useEffect, useRef, useState } from "react";
 import { PostItem } from "../posts/PostItem";
+import { createComment } from "../../../services/comments";
 
 export function CreateCommentModal({ onClose, onSubmit, post }) {
   const [comment, setComment] = useState("");
+  const [ loading, setLoading ] = useState(false);
   const modalRef = useRef(null);
 
   // Close modal on ESC key
@@ -24,14 +26,30 @@ export function CreateCommentModal({ onClose, onSubmit, post }) {
   };
 
   // Submit handler
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (comment.trim()) {
-      onSubmit?.(comment);
-      setComment("");
-      onClose();
+const handleCommentSubmit = async (formData) => {
+  setLoading(true);
+
+
+  try {
+    const response = await createComment(formData);
+    
+    if (response.errors) {
+      console.error(response.message);
+      // toast.error(response.message); // Optional
+      return;
     }
-  };
+
+    // You could update state with response.data if needed
+
+    // toast.success("Successfully posted"); // Optional
+  } catch (e) {
+    console.error("Something went wrong!", e);
+    // toast.error("Something went wrong!"); // Optional
+  } finally {
+    setLoading(false);
+    onClose();
+  }
+};
 
   return (
     <div
@@ -61,7 +79,7 @@ export function CreateCommentModal({ onClose, onSubmit, post }) {
             hideActions={true}
         />
         
-        <form onSubmit={handleSubmit} className="pt-4">
+        <form onSubmit={handleCommentSubmit} className="pt-4">
           <textarea
             className="w-full p-2 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows="4"

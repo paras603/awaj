@@ -2,16 +2,23 @@ import { useState, useEffect } from "react";
 import { CommentIcon } from "../../ui/CommentIcon";
 import { BookmarkIcon } from "../../ui/BookmarkIcon";
 import { CreateCommentModal } from "../comments/CreateCommentModal";
+import { createComment } from "../../../services/comments";
 
 export function PostActions({post}){
 
     const [ openCommentModal, setOpenCommentModal ] = useState(false);
+    const [ comments, setComments ] = useState(post.comments || []);
+    const [ loading, setLoading ] = useState(false);
 
     const handleCommentClick = () => {
         setOpenCommentModal(true);
     }
 
-      // 🔒 Lock body scroll when modal is open
+
+
+
+
+      //  Lock body scroll when modal is open
     useEffect(() => {
         if (openCommentModal) {
         document.body.classList.add("overflow-hidden");
@@ -30,7 +37,7 @@ export function PostActions({post}){
             <div className="flex items-center space-x-6 text-gray-400 text-sm">
                 <div className="flex items-center space-x-1 hover:text-white transition-colors cursor-pointer" onClick={handleCommentClick}>
                     <CommentIcon />
-                    <span>{post.comments.length}</span>
+                    <span>{comments.length}</span>
                 </div>
                 <div className="flex items-center space-x-1 hover:text-white transition-colors">
                     <BookmarkIcon />
@@ -39,11 +46,8 @@ export function PostActions({post}){
             </div>
             {openCommentModal && (
                 <CreateCommentModal
-                onClose={() => setOpenCommentModal(false)}
-                post={post}
-                onSubmit={(newComment) => {
-                    console.log("Comment submitted:", newComment);
-                }}
+                    onClose={() => setOpenCommentModal(false)}
+                    post={{ ...post, comments }}
                 />
             )}
         </>
