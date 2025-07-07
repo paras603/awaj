@@ -2,8 +2,9 @@ import { getToken } from "../auth/tokenService";
 import { API_BASE } from "../config/apiConfig";
 
 export async function createComment(formData) {
+    console.log("formdata in comments.js : ", JSON.stringify(formData))
     try{
-        const response = await fetch(`${API_BASE}/posts`, {
+        const response = await fetch(`${API_BASE}/comments`, {
             method: "POST",
             headers: {
                 Accept: "application/json",

@@ -17,7 +17,6 @@ export async function getPost(id){
     }
 
     const data = await response.json();
-    console.log('response data:', data)
     return data;
   } catch (error) {
     console.log(error);

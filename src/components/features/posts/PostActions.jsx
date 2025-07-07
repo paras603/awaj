@@ -10,12 +10,10 @@ export function PostActions({post}){
     const [ comments, setComments ] = useState(post.comments || []);
     const [ loading, setLoading ] = useState(false);
 
+
     const handleCommentClick = () => {
         setOpenCommentModal(true);
     }
-
-
-
 
 
       //  Lock body scroll when modal is open
@@ -48,6 +46,7 @@ export function PostActions({post}){
                 <CreateCommentModal
                     onClose={() => setOpenCommentModal(false)}
                     post={{ ...post, comments }}
+                    setComments={setComments}
                 />
             )}
         </>

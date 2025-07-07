@@ -2,18 +2,23 @@ import { EllipsisVerticalCircleIcon } from "../../ui/EllipsisVerticalCircleIcon"
 import { useEffect, useRef, useState } from "react";
 import { PostItem } from "../posts/PostItem";
 import { createComment } from "../../../services/comments";
+import { useAuth } from "../../../context/AuthContext";
 
-export function CreateCommentModal({ onClose, onSubmit, post }) {
+export function CreateCommentModal({ onClose, onSubmit, post, setComments }) {
   const [comment, setComment] = useState("");
   const [ loading, setLoading ] = useState(false);
   const modalRef = useRef(null);
+
+  const authUser = useAuth();
+  
+  
 
   // Close modal on ESC key
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") onClose();
     };
-    console.log(post)
+    console.log('comments: ', comment)
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
@@ -26,29 +31,54 @@ export function CreateCommentModal({ onClose, onSubmit, post }) {
   };
 
   // Submit handler
-const handleCommentSubmit = async (formData) => {
+const handleCommentSubmit = async (e) => {
+  e.preventDefault();
   setLoading(true);
 
+    const tempComment = {
+    id: Date.now(),
+    comment,
+    post_id: post.id,
+    user_id: authUser.authUser.id,
+    user: authUser.authUser,
+    created_at: new Date().toISOString(),
+  };
 
-  try {
-    const response = await createComment(formData);
-    
+  // Optimistically update UI
+  setComments((prev) => [tempComment, ...prev]);
+
+  const formData = {
+    comment: comment,
+    post_id: post.id,
+    user_id: authUser.authUser.id,
+  }
+
+   try {
+    const response = await createComment({
+      comment,
+      post_id: post.id,
+      user_id: authUser.authUser.id,
+    });
+
     if (response.errors) {
       console.error(response.message);
-      // toast.error(response.message); // Optional
+      // Optionally roll back
+      setComments((prev) => prev.filter(c => c.id !== tempComment.id));
       return;
     }
 
-    // You could update state with response.data if needed
+    // Optionally update with actual server comment (if you care about real ID)
+    // setComments(prev => [response.data, ...prev.filter(c => c.id !== tempComment.id)]);
 
-    // toast.success("Successfully posted"); // Optional
   } catch (e) {
     console.error("Something went wrong!", e);
-    // toast.error("Something went wrong!"); // Optional
+    // Rollback UI
+    setComments((prev) => prev.filter(c => c.id !== tempComment.id));
   } finally {
     setLoading(false);
     onClose();
   }
+
 };
 
   return (

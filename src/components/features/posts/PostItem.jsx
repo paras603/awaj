@@ -4,10 +4,12 @@ import { useAuth } from "../../../context/AuthContext.jsx";
 import { Votes } from "../Votes/Votes.jsx";
 import { useNavigate } from "react-router";
 import { PostActions } from "./PostActions.jsx";
+import { useState } from "react";
 
 export function PostItem({ post, isClickable=true, hideActions=false}) {
   const { authUser } = useAuth();
   const navigate = useNavigate();
+
 
   const handlePostClick = () => {
     if (isClickable){
