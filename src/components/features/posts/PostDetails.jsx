@@ -26,7 +26,6 @@ export function PostDetails() {
 }, [comments]);
 
 
-
     useEffect(() => {
         async function fetchPost() {
             try {
