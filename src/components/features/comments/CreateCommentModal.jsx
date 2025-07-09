@@ -45,7 +45,15 @@ const handleCommentSubmit = async (e) => {
   };
 
   // Optimistically update UI
-  setComments((prev) => [tempComment, ...prev]);
+  // setComments((prev) => [tempComment, ...prev]);
+  console.log('[CreateCommentModal] adding tempComment:', tempComment);
+setComments(prev => {
+  console.log('[CreateCommentModal] prev:', prev);
+  return [tempComment, ...prev];
+});
+
+  console.log('[CreateCommentModal] after adding:', tempComment);
+
 
   const formData = {
     comment: comment,

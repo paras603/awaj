@@ -19,12 +19,20 @@ export function PostDetails() {
 
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [comments, setComments] = useState([]);
+
+    useEffect(() => {
+  console.log('[PostDetails] comments:', comments);
+}, [comments]);
+
+
 
     useEffect(() => {
         async function fetchPost() {
             try {
                 const data = await getPost(id);
                 setPost(data.data);
+                 setComments(data.data.comments || []);
             } catch (error) {
                 console.error("Failed to load post:", error);
             } finally {
@@ -90,18 +98,19 @@ useEffect(() => {
                     )}
                     <div className=" py-8 px-8 sm:px-10 rounded-xl relative">
 
-                        <PostItem post={post} isClickable={false} />
+                        <PostItem post={post} isClickable={false}  comments={comments} setComments={setComments}/>
 
                         <div className="mt-6">
                             <div className="flex items-center mb-6">
                                 <CommentIcon className="w-5 h-5 text-gray-300 mr-2" />
                                 <h3 className="text-lg font-semibold text-white">Comments</h3>
-                                <span className="ml-2 text-gray-400 text-sm">({post.comments.length})</span>
+                                <span className="ml-2 text-gray-400 text-sm">({comments.length})</span>
                             </div>
 
-                            {(post.comments?.length || 0) > 0 ? (
+                            {(comments.length || 0) > 0 ? (
                                 <ul className="space-y-4">
-                                    {post.comments.map((comment) => (
+                                    {comments.map((comment) => (
+                                        // <CommentItem key={comment.id} comment={comment} />
                                         <CommentItem key={comment.id} comment={comment} />
                                     ))}
                                 </ul>

@@ -8,9 +8,9 @@ import { useState } from "react";
 
 export function CommentItem({ comment }) {
   const navigate = useNavigate();
-  const [ currentComment, setCurrentComment ] = useState(comment);
+  // const [ currentComment, setCurrentComment ] = useState(comment);
 
-  console.log(currentComment)
+  // console.log(currentComment)
 
   const handleUserProfileClick = (e) => {
     e.stopPropagation();
@@ -31,7 +31,7 @@ export function CommentItem({ comment }) {
           {/* Smaller avatar */}
           <img
             src={user1.imageUrl}
-            alt={`${currentComment.user.user_name}'s profile`}
+            alt={`${comment.user.user_name}'s profile`}
             className="w-7 h-7 rounded-full object-cover cursor-pointer mt-1"
             onClick={handleUserProfileClick}
           />
@@ -45,13 +45,13 @@ export function CommentItem({ comment }) {
                 {comment.user.user_name}
               </h3>
               <span className="text-[10px] text-gray-400">
-                · {formatPostDate(currentComment.attributes.created_at)}
+                · {formatPostDate(comment.attributes.created_at)}
               </span>
             </div>
 
             {/* Comment Content */}
             <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
-              {currentComment.attributes.comment}
+              {comment.attributes.comment}
             </p>
 
             {/* Post Actions */}
