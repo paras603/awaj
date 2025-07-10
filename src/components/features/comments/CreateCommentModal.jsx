@@ -78,6 +78,9 @@ setComments(prev => {
     // Optionally update with actual server comment (if you care about real ID)
     // setComments(prev => [response.data, ...prev.filter(c => c.id !== tempComment.id)]);
 
+    //if successfully cretead reaload the page so that the new comment is shown
+    window.location.reload();
+
   } catch (e) {
     console.error("Something went wrong!", e);
     // Rollback UI
