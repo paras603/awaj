@@ -6,13 +6,11 @@ import { useNavigate } from "react-router";
 import { PostActions } from "./PostActions.jsx";
 import { useState } from "react";
 
-export function PostItem({ post, isClickable=true, hideActions=false, comments = [], setComments}) {
+export function PostItem({ post, isClickable=true, hideActions=false}) {
   const { authUser } = useAuth();
   const navigate = useNavigate();
 
-  console.log('comments in post item: ', comments)
-  // console.log('comments in post item length : ', comments.length)
-
+  console.log('post is ', post)
 
   const handlePostClick = () => {
     if (isClickable){
@@ -77,8 +75,6 @@ export function PostItem({ post, isClickable=true, hideActions=false, comments =
             {!hideActions && (
               <PostActions
                 post={post}
-                comments={comments}
-                setComments={setComments}
               />
             )}
 
