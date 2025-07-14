@@ -5,6 +5,7 @@ import { CreatePostModal } from "./CreatePostModal";
 import { usePosts } from "../hooks/usePosts";
 import { PostItem } from "./features/posts/PostItem";
 import { PostActions } from "./features/posts/PostActions";
+import { PhotoIcon } from "./ui/PhotoIcon";
 
 export function Main() {
   const [openPostModal, setOpenPostModal] = useState(false);
@@ -19,24 +20,38 @@ export function Main() {
   return (
     <main className="bg-gray-900 p-4 sm:p-6 md:p-8 lg:p-10 ">
       <div className="mx-auto max-w-2xl py-6 rounded-lg border border-white/20 bg-gray-800">
-        <Card>
-          <div
-            className="flex flex-row "
-            onClick={() => setOpenPostModal(true)}
-          >
-            <img
-              src="src/assets/profile.png"
-              alt="user profile"
-              className="w-10 h-10 rounded-full"
-            />
-            <p className="cursor-text block w-full p-3 text-sm text-gray-500 bg-gray-800">
+      <Card>
+        <div
+          className="flex items-start space-x-4 p-4 bg-gray-800 rounded-lg cursor-pointer"
+          onClick={() => setOpenPostModal(true)}
+        >
+          {/* Profile Image */}
+          <img
+            src="src/assets/profile.png"
+            alt="User profile"
+            className="w-10 h-10 rounded-full"
+          />
+
+          {/* Placeholder and media icon */}
+          <div className="flex flex-col flex-grow">
+            {/* Placeholder Text */}
+            <p className="w-full p-3 text-sm text-gray-400 bg-gray-700 rounded-md">
               Share your thoughts...
             </p>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition cursor-pointer">
-              Post
-            </button>
+
+            {/* Divider */}
+            <hr className="my-2 border-gray-700" />
+
+            {/* Media Icon Section */}
+            <div className="flex items-center space-x-2 text-gray-400 text-sm">
+              <PhotoIcon className="w-5 h-5" />
+              <span>Photo</span>
+            </div>
           </div>
-        </Card>
+        </div>
+      </Card>
+
+
 
         {openPostModal && (
           <CreatePostModal

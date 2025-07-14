@@ -10,8 +10,6 @@ export function PostItem({ post, isClickable=true, hideActions=false}) {
   const { authUser } = useAuth();
   const navigate = useNavigate();
 
-  console.log('post is ', post)
-
   const handlePostClick = () => {
     if (isClickable){
       navigate(`/posts/${post.id}`);

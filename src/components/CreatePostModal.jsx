@@ -3,6 +3,7 @@ import { createPost, getAllPosts } from "../services/posts";
 import { toast, ToastContainer } from "react-toastify";
 import { Spinner } from "./ui/Spinner.jsx";
 import { CloseIcon } from "./ui/CloseIcon.jsx";
+import { PhotoIcon } from "./ui/PhotoIcon.jsx";
 
 export function CreatePostModal({
   openPostModal,
@@ -87,26 +88,35 @@ export function CreatePostModal({
             ></textarea>
           </div>
 
-          <button
-            type="submit"
-            disabled={content.trim() === "" || loading}
-            className={`mt-4 w-full py-3 text-white font-semibold rounded-lg transition
+
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-white justify-between">
+            <div className="flex-shrink-0">
+              <PhotoIcon className="w-8 h-8 text-gray-200" />
+            </div>
+
+            <button
+              type="submit"
+              aria-busy={loading}
+              disabled={content.trim() === "" || loading}
+              className={`w-full sm:w-auto px-6 py-3 text-white font-semibold rounded-lg transition duration-200 ease-in-out
                 ${
                   content.trim() === "" || loading
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                    : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
                 }
               `}
-          >
-            {loading ? (
-              <div className="flex justify-center items-center space-x-2">
-                <Spinner />
-                <span>Posting...</span>
-              </div>
-            ) : (
-              "Post"
-            )}
-          </button>
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner className="w-5 h-5 animate-spin" />
+                  <span>Posting...</span>
+                </div>
+              ) : (
+                "Post"
+              )}
+            </button>
+          </div>
+
         </form>
       </div>
     </div>
