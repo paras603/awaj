@@ -14,6 +14,7 @@ export function Main() {
   function handlePostCreated(newPost) {
     setPosts((prev) => [newPost, ...prev]);
   }
+  
 
   if (loading) return <p className="text-gray-500">Loading posts...</p>;
 
