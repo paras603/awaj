@@ -11,6 +11,7 @@ export function Main() {
   const [openPostModal, setOpenPostModal] = useState(false);
   const { posts, setPosts, loading } = usePosts();
 
+
   function handlePostCreated(newPost) {
     setPosts((prev) => [newPost, ...prev]);
   }
@@ -40,13 +41,13 @@ export function Main() {
             </p>
 
             {/* Divider */}
-            <hr className="my-2 border-gray-700" />
+            {/* <hr className="my-2 border-gray-700" /> */}
 
             {/* Media Icon Section */}
-            <div className="flex items-center space-x-2 text-gray-400 text-sm">
+            {/* <div className="flex items-center space-x-2 text-gray-400 text-sm">
               <PhotoIcon className="w-5 h-5" />
               <span>Photo</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </Card>

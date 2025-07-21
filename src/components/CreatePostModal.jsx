@@ -13,6 +13,15 @@ export function CreatePostModal({
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [ file, setFile ] = useState(null);
+
+  const handleFileChange = (e) => {
+    if (e.target.files){
+      console.log(e.target.files)
+      setFile(e.target.files[0]);
+    }
+  }
+
   if (!openPostModal) return null;
 
   const textAreaRef = useRef();
@@ -25,10 +34,14 @@ export function CreatePostModal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = { content };
+    const formData = new FormData();
+    formData.append('content', content);
+    formData.append('file', file);
+    console.log([...formData.entries()]);
     setLoading(true);
     try {
       const response = await createPost(formData);
+      console.log("response", response)
       if (response.errors) {
         toast.error(response.message);
         setLoading(false);
@@ -86,12 +99,24 @@ export function CreatePostModal({
               className="w-full p-4 text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition"
               placeholder="Share your thoughts..."
             ></textarea>
+            {file && <img className="h-20" src={file} alt="Uploaded preview" />}
           </div>
 
 
           <div className="flex flex-col sm:flex-row items-center gap-4 text-white justify-between">
             <div className="flex-shrink-0">
-              <PhotoIcon className="w-8 h-8 text-gray-200" />
+              {/* <input id="file" type="file" onChange={handleFileChange}>
+                <PhotoIcon className="w-8 h-8 text-gray-200" />
+              </input> */}
+              <label htmlFor="file" className="cursor-pointer flex items-center gap-2">
+                <PhotoIcon className="w-8 h-8 text-gray-200" />
+                <input
+                  id="file"
+                  type="file"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
             </div>
 
             <button
