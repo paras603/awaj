@@ -11,6 +11,8 @@ export function Main() {
   const [openPostModal, setOpenPostModal] = useState(false);
   const { posts, setPosts, loading } = usePosts();
 
+  console.log(posts)
+
 
   function handlePostCreated(newPost) {
     setPosts((prev) => [newPost, ...prev]);

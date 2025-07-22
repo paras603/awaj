@@ -36,7 +36,7 @@ export function CreatePostModal({
     e.preventDefault();
     const formData = new FormData();
     formData.append('content', content);
-    formData.append('file', file);
+    formData.append('image', file);
     console.log([...formData.entries()]);
     setLoading(true);
     try {
@@ -99,7 +99,7 @@ export function CreatePostModal({
               className="w-full p-4 text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition"
               placeholder="Share your thoughts..."
             ></textarea>
-            {file && <img className="h-20" src={file} alt="Uploaded preview" />}
+            {file && <img className="h-20" src={URL.createObjectURL(file)} alt="Uploaded preview" />}
           </div>
 
 

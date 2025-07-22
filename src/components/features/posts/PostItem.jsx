@@ -61,7 +61,20 @@ export function PostItem({ post, isClickable=true, hideActions=false}) {
               <p className="text-gray-200 text-[15px] mb-3 leading-snug">
                 {post.attributes.content}
               </p>
+
+              {/* Post Image */}
+              {post.attributes.image_url && (
+                <div className="mb-3">
+                  <img
+                    src={post.attributes.image_url}
+                    alt="Post attachment"
+                    className="w-full max-h-[400px] object-cover rounded-lg border border-white/10 shadow"
+                  />
+                </div>
+              )}
+
             </div>
+
 
             {/* Post Actions */}
             {/* {!hideActions && <PostActions

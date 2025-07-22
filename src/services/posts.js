@@ -76,10 +76,9 @@ export async function createPost(formData) {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      body: JSON.stringify(formData),
+      body: formData,
     });
 
     if (!response.ok) {
