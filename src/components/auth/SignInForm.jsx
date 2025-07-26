@@ -20,36 +20,42 @@ export function SignInForm(){
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
 
+    const [ loading, setLoading ] = useState(false);
+
     const handleSubmit = async (e) => {
       e.preventDefault();
 
       setEmailError("");
       setPasswordError("");
 
-      const formData = new FormData();
-      formData.append("email", email);
-      formData.append("password", password);
-
-      const response = await loginUser(formData);
-      
-      if(response.data){
-        const {token, user} = response.data;
-        login(user, token);
-        console.log(response.data)
-        navigate('/dashboard')
+      setLoading(true);
+      try{
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+  
+        const response = await loginUser(formData);
+        
+        if(response.data){
+          const {token, user} = response.data;
+          login(user, token);
+          console.log(response.data)
+          navigate('/dashboard')
+        }
+  
+        if(response.errors){
+          setPassword("");
+          setEmailError(response.errors.email);
+          setPasswordError(response.errors.password);
+          return;
+        }
+  
+        toast.error(response.message)
+        setEmail("")
+        setPassword("")
+      }finally{
+        setLoading(false);
       }
-
-      if(response.errors){
-        setPassword("");
-        setEmailError(response.errors.email);
-        setPasswordError(response.errors.password);
-        return;
-      }
-
-      toast.error(response.message)
-      setEmail("")
-      setPassword("")
-
     }
 
     return (
@@ -99,7 +105,7 @@ export function SignInForm(){
             </div>
           </div>
 
-          <AuthButton>Sign In</AuthButton>
+          <AuthButton disabled={loading}> {loading ? 'Signing In' : 'Sign In'}</AuthButton>
         </form>
         <ToastContainer/>
       </>
