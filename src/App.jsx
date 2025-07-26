@@ -3,6 +3,7 @@ import { SignIn } from "./pages/SignIn";
 import { SignInForm } from "./components/auth/SignInForm";
 import { AuthButton } from "./components/auth/AuthButton";
 import { AuthFooter } from "./components/auth/AuthFooter";
+import { ToastContainer } from "react-toastify";
 
 export function App() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export function App() {
           linkHref="/signup"
         />
       </div>
+      {/* <ToastContainer/> */}
     </div>
   );
 }

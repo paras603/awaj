@@ -28,6 +28,7 @@ export function AppRoutes(){
                 <Route path='/settings' element={<Settings/>} />
                 <Route path='/posts/:id' element={<PostDetails/>} />
             </Route>
+            
         </Routes>
     );
 }

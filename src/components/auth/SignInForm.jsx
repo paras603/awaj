@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { FormError } from "../ui/FormError";
+import { toast, ToastContainer } from "react-toastify";
 
 export function SignInForm(){
 
@@ -16,27 +17,41 @@ export function SignInForm(){
     const [ emailError, setEmailError ] = useState(null);
     const [ passwordError, setPasswordError ] = useState(null);
 
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+
     return (
+      <>
         <form className="space-y-6" 
           onSubmit={async (e) => {
             e.preventDefault();
 
-            const formData = new FormData(e.target);
+            setEmailError("");
+            setPasswordError("");
+
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("password", password);
 
             const response = await loginUser(formData);
-
-            if(response.errors){
-              console.log('response where error: ', response.errors);
-              setEmailError(response.errors.email);
-              setPasswordError(response.errors.password);
-            }
-
+            
             if(response.data){
               const {token, user} = response.data;
               login(user, token);
               console.log(response.data)
               navigate('/dashboard')
             }
+
+            if(response.errors){
+              setPassword("");
+              setEmailError(response.errors.email);
+              setPasswordError(response.errors.password);
+              return;
+            }
+            
+            toast.error(response.message)
+            setEmail("")
+            setPassword("")
 
           }}
         >
@@ -51,6 +66,8 @@ export function SignInForm(){
                 name="email"
                 id="email"
                 autoComplete="email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
               />
               { emailError && <FormError message={emailError} /> }
             </div>
@@ -75,6 +92,8 @@ export function SignInForm(){
                 name="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
               />
               {passwordError && <FormError message={passwordError} /> }
             </div>
@@ -82,5 +101,7 @@ export function SignInForm(){
 
           <AuthButton>Sign In</AuthButton>
         </form>
-    );
+        <ToastContainer/>
+      </>
+    );                                
 }
