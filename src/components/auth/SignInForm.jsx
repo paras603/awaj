@@ -20,41 +20,41 @@ export function SignInForm(){
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
 
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      setEmailError("");
+      setPasswordError("");
+
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+
+      const response = await loginUser(formData);
+      
+      if(response.data){
+        const {token, user} = response.data;
+        login(user, token);
+        console.log(response.data)
+        navigate('/dashboard')
+      }
+
+      if(response.errors){
+        setPassword("");
+        setEmailError(response.errors.email);
+        setPasswordError(response.errors.password);
+        return;
+      }
+
+      toast.error(response.message)
+      setEmail("")
+      setPassword("")
+
+    }
+
     return (
       <>
-        <form className="space-y-6" 
-          onSubmit={async (e) => {
-            e.preventDefault();
-
-            setEmailError("");
-            setPasswordError("");
-
-            const formData = new FormData();
-            formData.append("email", email);
-            formData.append("password", password);
-
-            const response = await loginUser(formData);
-            
-            if(response.data){
-              const {token, user} = response.data;
-              login(user, token);
-              console.log(response.data)
-              navigate('/dashboard')
-            }
-
-            if(response.errors){
-              setPassword("");
-              setEmailError(response.errors.email);
-              setPasswordError(response.errors.password);
-              return;
-            }
-            
-            toast.error(response.message)
-            setEmail("")
-            setPassword("")
-
-          }}
-        >
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <AuthLabel
               labelFor="email"
@@ -79,7 +79,7 @@ export function SignInForm(){
                 labelFor="password"
                 label="Password"
               />
-              <div className="text-sm">
+              <div className="text-sm" onClick={()=> toast.info("feature coming soon")}>
                 <AuthLink
                   href="#"
                   linkText="Forgot password?"
