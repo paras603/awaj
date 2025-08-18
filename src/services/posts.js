@@ -81,6 +81,8 @@ export async function createPost(formData) {
       body: formData,
     });
 
+    
+
     if (!response.ok) {
       const errorData = await response.json();
       return errorData;

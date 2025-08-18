@@ -36,7 +36,15 @@ export function CreatePostModal({
     e.preventDefault();
     const formData = new FormData();
     formData.append('content', content);
-    formData.append('image', file);
+    if(file != null){
+      if (file.size > (2 * 1024 * 1024)){
+        toast.error("Image size should be less than 2 MB.");
+        return;
+      }
+      console.log("file size is ",file.size)
+      formData.append('image', file);
+    }
+      
     console.log([...formData.entries()]);
     setLoading(true);
     try {
