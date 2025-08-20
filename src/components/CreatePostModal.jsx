@@ -13,12 +13,21 @@ export function CreatePostModal({
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [ file, setFile ] = useState(null);
+  const [ fileList, setFileList ] = useState([]);
+
+  const handleRemoveImage = (indexToRemove) => {
+    setFileList((prevList) => prevList.filter((_, index) => index !== indexToRemove))
+  }
+
+  useEffect(() => {
+    console.log("fileList, ", fileList)
+  }, [fileList])
 
   const handleFileChange = (e) => {
     if (e.target.files){
-      console.log(e.target.files)
-      setFile(e.target.files[0]);
+      const test = e.target.files
+      setFileList(Array.from(e.target.files));
+      console.log(test, 'file')
     }
   }
 
@@ -36,13 +45,17 @@ export function CreatePostModal({
     e.preventDefault();
     const formData = new FormData();
     formData.append('content', content);
-    if(file != null){
-      if (file.size > (2 * 1024 * 1024)){
-        toast.error("Image size should be less than 2 MB.");
-        return;
+
+    //check if each file is greater than 2 MB
+    if(fileList != null){
+      for (let file of fileList){
+        if (file.size > (2 * 1024 * 1024)){
+          toast.error("Image size should be less than 2 MB.");
+          return;
+        }
       }
       console.log("file size is ",file.size)
-      formData.append('image', file);
+      formData.append('image', fileList);
     }
       
     console.log([...formData.entries()]);
@@ -107,22 +120,39 @@ export function CreatePostModal({
               className="w-full p-4 text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition"
               placeholder="Share your thoughts..."
             ></textarea>
-            {file && <img className="h-20" src={URL.createObjectURL(file)} alt="Uploaded preview" />}
+            {fileList && (
+              <div className="flex flex-wrap gap-3 mt-4">
+                {fileList.map((file, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Uploaded preview ${index}`}
+                      className="h-24 w-24 object-cover rounded-lg shadow border border-gray-300 dark:border-gray-600"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="absolute -top-2 -right-2 bg-black/70 text-white rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-600 transition"
+                      title="Remove image"
+                    >
+                      <CloseIcon className={"h-3 w-3"}/>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-
 
           <div className="flex flex-col sm:flex-row items-center gap-4 text-white justify-between">
             <div className="flex-shrink-0">
-              {/* <input id="file" type="file" onChange={handleFileChange}>
-                <PhotoIcon className="w-8 h-8 text-gray-200" />
-              </input> */}
-              <label htmlFor="file" className="cursor-pointer flex items-center gap-2">
+              <label htmlFor="files" className="cursor-pointer flex items-center gap-2">
                 <PhotoIcon className="w-8 h-8 text-gray-200" />
                 <input
-                  id="file"
+                  id="files"
                   type="file"
                   onChange={handleFileChange}
                   className="hidden"
+                  multiple
                 />
               </label>
             </div>
