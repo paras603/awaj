@@ -19,15 +19,14 @@ export function CreatePostModal({
     setFileList((prevList) => prevList.filter((_, index) => index !== indexToRemove))
   }
 
-  useEffect(() => {
-    console.log("fileList, ", fileList)
-  }, [fileList])
+  // useEffect(() => {
+  //   console.log("fileList, ", fileList)
+  // }, [fileList])
 
   const handleFileChange = (e) => {
     if (e.target.files){
-      const test = e.target.files
-      setFileList(Array.from(e.target.files));
-      console.log(test, 'file')
+      const newFiles = Array.from(e.target.files)
+      setFileList((prevList) => [...prevList, ...newFiles]);
     }
   }
 
@@ -54,15 +53,19 @@ export function CreatePostModal({
           return;
         }
       }
-      console.log("file size is ",file.size)
-      formData.append('image', fileList);
+      // console.log("file  is ",fileList)
+      // formData.append('images []', fileList);
+      fileList.forEach((file) => {
+        formData.append('images []', file);
+      })
+
     }
       
-    console.log([...formData.entries()]);
+    // console.log([...formData.entries()]);
     setLoading(true);
     try {
       const response = await createPost(formData);
-      console.log("response", response)
+      // console.log("response", response)
       if (response.errors) {
         toast.error(response.message);
         setLoading(false);

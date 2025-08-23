@@ -62,17 +62,71 @@ export function PostItem({ post, isClickable=true, hideActions=false}) {
                 {post.attributes.content}
               </p>
 
-              {/* Post Image */}
-              {post.attributes.image_url && (
-                <div className="mb-3">
-                  <img
-                    src={post.attributes.image_url}
-                    alt="Post attachment"
-                    className="w-full max-h-[400px] object-cover rounded-lg border border-white/10 shadow"
-                  />
+              {/* post image */}
+              {post.attributes.image_urls && post.attributes.image_urls.length > 0 && (
+                <div className="w-full max-h-96 overflow-hidden rounded-lg mb-6">
+                  {post.attributes.image_urls.length === 1 && (
+                    <div className="w-full h-96">
+                      <img
+                        src={post.attributes.image_urls[0]}
+                        alt="Post image"
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </div>
+                  )}
+
+                  {post.attributes.image_urls.length === 2 && (
+                    <div className="flex h-96 space-x-2">
+                      {post.attributes.image_urls.slice(0, 2).map((url, idx) => (
+                        <div key={idx} className="w-1/2">
+                          <img
+                            src={url}
+                            alt={`Post image ${idx + 1}`}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {post.attributes.image_urls.length === 3 && (
+                    <div className="flex h-96 space-x-2">
+                      <div className="w-1/2">
+                        <img
+                          src={post.attributes.image_urls[0]}
+                          alt="Post image 1"
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                      <div className="w-1/2 flex flex-col space-y-2">
+                        {post.attributes.image_urls.slice(1, 3).map((url, idx) => (
+                          <div key={idx} className="h-1/2">
+                            <img
+                              src={url}
+                              alt={`Post image ${idx + 2}`}
+                              className="w-full h-full object-cover rounded-lg"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {post.attributes.image_urls.length >= 4 && (
+                    <div className="grid grid-cols-2 grid-rows-2 gap-2 h-96">
+                      {post.attributes.image_urls.slice(0, 4).map((url, idx) => (
+                        <div key={idx} className="w-full h-full">
+                          <img
+                            src={url}
+                            alt={`Post image ${idx + 1}`}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
-
             </div>
 
 
