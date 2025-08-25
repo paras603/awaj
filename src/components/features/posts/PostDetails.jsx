@@ -22,8 +22,8 @@ export function PostDetails() {
     const [comments, setComments] = useState([]);
 
     useEffect(() => {
-  console.log('[PostDetails] comments:', comments);
-}, [comments]);
+        console.log('post details component');
+    }, []);
 
 
     useEffect(() => {
