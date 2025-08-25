@@ -71,21 +71,36 @@ export function PostImage({ images }) {
           </div>
         )}
 
-        {images.length >= 4 && (
-          <div className="grid grid-cols-2 grid-rows-2 gap-2 h-96">
-            {images.slice(0, 4).map((url, idx) => (
-              <div key={idx} className="w-full h-full">
-                <PhotoView src={url}>
-                  <img
-                    src={url}
-                    alt={`Post image ${idx + 1}`}
-                    className="w-full h-full object-cover rounded-lg cursor-pointer"
-                  />
-                </PhotoView>
-              </div>
-            ))}
-          </div>
-        )}
+{images.length >= 4 && (
+  <div className="grid grid-cols-2 grid-rows-2 gap-2 h-96">
+    {images.slice(0, 4).map((url, idx) => {
+      const isLast = idx === 3;
+      const extraCount = images.length - 4;
+
+      return (
+        <div key={idx} className="relative w-full h-full">
+          <PhotoView src={url}>
+            <div className="relative w-full h-full cursor-pointer">
+              <img
+                src={url}
+                alt={`Post image ${idx + 1}`}
+                className="w-full h-full object-cover rounded-lg"
+              />
+              {isLast && extraCount > 0 && (
+                <div className="absolute inset-0 flex items-center justify-center text-white text-3xl font-bold rounded-lg">
+                  +{extraCount}
+                </div>
+              )}
+            </div>
+          </PhotoView>
+        </div>
+      );
+    })}
+  </div>
+)}
+
+
+
       </div>
     </PhotoProvider>
   );
