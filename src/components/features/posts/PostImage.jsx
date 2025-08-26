@@ -3,9 +3,9 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import 'react-photo-view/dist/react-photo-view.css';
 
 export function PostImage({ images }) {
-  useEffect(() => {
-    console.log("Post images:", images);
-  }, [images]);
+//   useEffect(() => {
+//     console.log("Post images:", images);
+//   }, [images]);
 
   if (!images || images.length === 0) return null;
 
