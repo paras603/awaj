@@ -61,6 +61,7 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
               </div>
 
               {/* Post Content */}
+              {/* whitespace-pre-wrap break-words overflow-x-auto max-w-full */}
               <p className="text-gray-200 text-[15px] mb-3 leading-snug">
                 {post.attributes.content}
               </p>
