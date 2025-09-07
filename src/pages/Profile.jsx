@@ -1,5 +1,4 @@
 import {Navbar} from "../components/Navbar";
-import { Sidebar } from "../components/Sidebar";
 
 const user = {
   name: 'Tom Cook',
@@ -12,7 +11,7 @@ export function Profile(){
     return (
         <>
         <Navbar user={user}/>
-        <Sidebar/>
+        <p>this is profile page</p>
         </>
     );
 }
