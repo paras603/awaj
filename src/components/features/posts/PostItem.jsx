@@ -93,6 +93,7 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
             />
           </div>
         )}
+        
       </Card>
 
     </>
