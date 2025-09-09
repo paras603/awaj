@@ -11,7 +11,7 @@ export function Profile(){
     return (
         <>
         <Navbar user={user}/>
-        <p>this is profile page</p>
+            <p>this is profile page</p>
         </>
     );
 }
