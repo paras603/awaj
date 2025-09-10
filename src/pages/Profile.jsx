@@ -10,7 +10,7 @@ const user = {
 export function Profile(){
     return (
         <>
-        <Navbar user={user}/>
+            <Navbar user={user}/>
             <p>this is profile page</p>
         </>
     );
