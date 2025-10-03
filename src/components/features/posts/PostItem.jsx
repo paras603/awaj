@@ -61,7 +61,7 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
               </div>
 
               {/* Post Content */}
-              <p className="text-gray-200 text-[15px] mb-3 leading-snug">
+              <p className="text-gray-200 text-[15px] mb-3 leading-snug" style={{ wordBreak: "break-all"}}>
                 {post.attributes.content}
               </p>
 
