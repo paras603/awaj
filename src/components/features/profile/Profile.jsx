@@ -1,5 +1,5 @@
 export function Profile(){
     return (
-        <p>This is profile page hai</p>
+        <p>This is profile page .</p>
     )
 }
