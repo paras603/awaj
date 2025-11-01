@@ -59,6 +59,16 @@ export function Profile() {
               </div>
             </div>
 
+            {/* another section */}
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-2">Next section</h3>
+              <div className="bg-gray-50 p-4 rounded">
+                <p className="italic">Web Developer</p>
+                <p className="italic">Lives in New York</p>
+                <p className="italic">Photographer</p>
+              </div>
+            </div>
+
             {/* Photos */}
             <div className="mt-8">
               <div className="flex justify-between items-center mb-3">
