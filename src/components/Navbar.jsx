@@ -22,7 +22,10 @@ export function Navbar({user}){
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
                 <div className="shrink-0">
-                  <h1 className='text-white text-3xl font-bold tracking-tight'>Awaj</h1>
+                  <h1 
+                    className='text-white text-3xl font-bold tracking-tight cursor-pointer'
+                    onClick={()=>navigate('/dashboard')}
+                  >Awaj</h1>
                 </div>
               </div>
               <div className="hidden md:block">
