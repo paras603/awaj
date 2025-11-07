@@ -44,7 +44,7 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
               {/* User Info */}
               <div className="flex items-center space-x-3 mb-1">
                 <img
-                  src={user.imageUrl}
+                  src={post.relationships.profile_picture}
                   alt={`${post.relationships.user_name}'s profile`}
                   className="w-9 h-9 rounded-full object-cover cursor-pointer"
                   onClick={handleUserProfileClick}

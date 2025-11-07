@@ -9,6 +9,7 @@ import { Profile } from '../pages/Profile.jsx';
 import { PostDetails } from '../components/features/posts/PostDetails.jsx';
 import PublicLayout from '../components/layouts/PublicLayout.jsx';
 import PublicRoute from '../components/layouts/PublicRoute.jsx';
+import { Pictures } from '../pages/pictures.jsx';
 
 export function AppRoutes(){
     return (
@@ -27,6 +28,7 @@ export function AppRoutes(){
                 <Route path='/dashboard' element={<Dashboard/>} />
                 <Route path='/settings' element={<Settings/>} />
                 <Route path='/posts/:id' element={<PostDetails/>} />
+                <Route path='/pictures' element={<Pictures/>} />
             </Route>
             
         </Routes>
