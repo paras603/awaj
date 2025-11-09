@@ -30,7 +30,7 @@ export function CommentItem({ comment }) {
       <CommentCard>
           {/* Smaller avatar */}
           <img
-            src={user1.imageUrl}
+            src={comment.user.profile_picture}
             alt={`${comment.user.user_name}'s profile`}
             className="w-7 h-7 rounded-full object-cover cursor-pointer mt-1"
             onClick={handleUserProfileClick}
