@@ -1,16 +1,33 @@
+import { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
-
-const user = {
-  name: "John Doe",
-  email: "john@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
+import { fetchAuthUser } from "../services/auth";
 
 export function Profile() {
+
+  const [authUser, setAuthUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect( () => {
+    (async() => {
+      try{
+        const data = await fetchAuthUser();
+        console.log("RAW data from API: ", data.data)
+        setAuthUser(data.data);
+      }catch(err){
+        setError(err);
+      }finally{
+        setLoading(false);
+      }
+    }) ();
+  }, []);
+
+  if(loading) return <div>Loading...</div>;
+  if(error) return <div>Error loading page!</div>;
+
   return (
     <>
-      <Navbar user={user} />
+      <Navbar />
 
       <div className="min-h-screen bg-sky-200 py-10">
         <div className="max-w-3xl mx-auto bg-white shadow rounded-lg overflow-hidden">
@@ -18,8 +35,8 @@ export function Profile() {
           <div className="relative bg-black h-48">
             <div className="absolute -bottom-12 left-8 flex items-end">
               <img
-                src={user.imageUrl}
-                alt={user.name}
+                src={authUser?.latest_profile_picture?.image}
+                alt={authUser.username}
                 className="w-32 h-32 rounded-full border-4 border-white"
               />
               <button className="ml-4 px-4 py-1 border border-gray-700 text-gray-700 rounded hover:bg-gray-100">
@@ -30,8 +47,8 @@ export function Profile() {
 
           {/* User Info */}
           <div className="mt-16 px-8 pb-8">
-            <h2 className="text-2xl font-semibold">{user.name}</h2>
-            <p className="text-gray-500">New York</p>
+            <h2 className="text-2xl font-semibold">{authUser.username}</h2>
+            <p className="text-gray-500">{authUser.email}</p>
 
             {/* Stats */}
             <div className="flex justify-around text-center mt-6 border-t pt-6">
