@@ -1,8 +1,9 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { removeToken } from '../auth/tokenService'
-import { logoutUser } from '../services/auth';
+import { fetchAuthUser, logoutUser } from '../services/auth';
 import { useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
 
 const logout = async() => {
   const response = await logoutUser();
@@ -14,10 +15,25 @@ const logout = async() => {
   }
 }
 
-export function Navbar({user}){
+export function Navbar(){
+
+  const [authUser, setAuthUser] = useState(null);
+
   const navigate = useNavigate();
 
-  console.log('Navbar user:', user);
+  useEffect(() => {
+    (async() => {
+      try{
+        const data = await fetchAuthUser();
+        console.log('Raw data from API:', data.data);
+        setAuthUser(data.data);
+      }catch(error){
+        console.log(error)
+      }
+    })();
+  }, []);
+
+  console.log('Navbar user:', authUser);
     return (
         <Disclosure as="nav" className="bg-gray-500">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -47,7 +63,7 @@ export function Navbar({user}){
                       <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <img alt="" src={user.imageUrl} className="size-8 rounded-full" />
+                        <img alt="" src={authUser?.latest_profile_picture?.image} className="size-8 rounded-full" />
                       </MenuButton>
                     </div>
                     <MenuItems
@@ -87,11 +103,11 @@ export function Navbar({user}){
             <div className="border-t border-gray-700 pt-4 pb-3">
               <div className="flex items-center px-5">
                 <div className="shrink-0">
-                  <img alt="" src={user.imageUrl} className="size-10 rounded-full" />
+                  <img alt="" src={authUser?.latest_profile_picture?.image} className="size-10 rounded-full" />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base/5 font-medium text-white">{user.name}</div>
-                  <div className="text-sm font-medium text-gray-400">{user.email}</div>
+                  <div className="text-base/5 font-medium text-white">{authUser?.username}</div>
+                  <div className="text-sm font-medium text-gray-400">{authUser?.email}</div>
                 </div>
                 <button
                   type="button"

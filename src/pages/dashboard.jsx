@@ -11,7 +11,7 @@ const user = {
 export default function Dashboard(){
     return (
       <div className="min-h-full">
-        <Navbar user={user} />
+        <Navbar />
         <Main/>
       </div>
     );

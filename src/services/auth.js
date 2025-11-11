@@ -77,3 +77,32 @@ export async function logoutUser(){
         return error;
     }
 }
+
+export async function fetchAuthUser(){
+    try{
+        const response = await fetch(
+            `${API_BASE}/auth-user`,
+            {
+                method: "GET",
+                headers:{
+                    Accept: "application/json",
+                    Authorization: `Bearer ${getToken()}`
+                },
+            }
+        );
+
+        if(!response.ok){
+            const errorData = await response.json();
+            throw errorData;
+        }
+
+        // return response.json();
+
+        const data = await response.json();
+        return data;
+
+    }catch (error){
+        console.log(error);
+        return error;
+    }
+}
