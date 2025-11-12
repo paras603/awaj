@@ -53,8 +53,8 @@ export function Profile() {
             {/* Stats */}
             <div className="flex justify-around text-center mt-6 border-t pt-6">
               <div>
-                <p className="text-xl font-semibold">253</p>
-                <p className="text-gray-500 text-sm">Photos</p>
+                <p className="text-xl font-semibold">{authUser.aura}</p>
+                <p className="text-gray-500 text-sm">Aura</p>
               </div>
               <div>
                 <p className="text-xl font-semibold">1026</p>
@@ -66,25 +66,25 @@ export function Profile() {
               </div>
             </div>
 
-            {/* About */}
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold mb-2">About</h3>
-              <div className="bg-gray-50 p-4 rounded">
-                <p className="italic">Web Developer</p>
-                <p className="italic">Lives in New York</p>
-                <p className="italic">Photographer</p>
+            {/* Bio */}
+            { authUser?.bio?.trim() && (
+              <div className="mt-8">
+                <h3 className="text-lg font-semibold mb-2">Bio</h3>
+                <div className="bg-gray-50 p-4 rounded">
+                  <p className="italic">{authUser.bio}</p>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* another section */}
-            <div className="mt-8">
+            {/* <div className="mt-8">
               <h3 className="text-lg font-semibold mb-2">Next section</h3>
               <div className="bg-gray-50 p-4 rounded">
                 <p className="italic">Web Developer</p>
                 <p className="italic">Lives in New York</p>
                 <p className="italic">Photographer</p>
               </div>
-            </div>
+            </div> */}
 
             {/* Photos */}
             <div className="mt-8">
