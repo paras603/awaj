@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { fetchAuthUser } from "../services/auth";
+import { PostImage } from "../components/features/posts/postImage";
+import { PostItem } from "../components/features/posts/PostItem";
 
 export function Profile() {
 
@@ -110,6 +112,31 @@ export function Profile() {
                   />
                 ))}
               </div>
+            </div>
+
+            {/* Posts */}
+            <div className="mt-8">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-lg font-semibold">Recent Posts</h3>
+                {/* <a href="#" className="text-gray-500 text-sm">
+                  Show all
+                </a> */}
+              </div>
+
+              {authUser.posts.length === 0 ? (
+                <p>No posts to show</p>
+              ) : (
+                <ul className="space-y-4">
+                  {authUser.posts.map((post) => (
+                    <div key={post.id}>
+                      <hr className="border-t border-white/20 my-4" />
+                      {/* <PostItem  post={post} /> */}
+                      <PostItem post={post} />
+                    </div>
+                  ))}
+                </ul>
+              )}
+              
             </div>
           </div>
         </div>
