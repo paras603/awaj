@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
-import { fetchAuthUser } from "../services/auth";
+import { fetchAuthUser, fetchAuthPosts } from "../services/auth";
 import { PostImage } from "../components/features/posts/postImage";
 import { PostItem } from "../components/features/posts/PostItem";
 
@@ -10,12 +10,18 @@ export function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [posts, setPosts] = useState(null);
+
   useEffect( () => {
     (async() => {
       try{
-        const data = await fetchAuthUser();
-        console.log("RAW data from API: ", data.data)
-        setAuthUser(data.data);
+        const authUserData = await fetchAuthUser();
+        console.log("RAW data from API: ", authUserData.data)
+        setAuthUser(authUserData.data);
+
+        const authPostsData = await fetchAuthPosts();
+        console.log("RAW data form API: ", authPostsData.data);
+        setPosts(authPostsData.data);
       }catch(err){
         setError(err);
       }finally{
@@ -41,9 +47,9 @@ export function Profile() {
                 alt={authUser.username}
                 className="w-32 h-32 rounded-full border-4 border-white"
               />
-              <button className="ml-4 px-4 py-1 border border-gray-700 text-gray-700 rounded hover:bg-gray-100">
+              {/* <button className="ml-4 px-4 py-1 border border-gray-700 text-gray-700 rounded hover:bg-gray-100">
                 Edit Profile
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -98,19 +104,18 @@ export function Profile() {
               </div>
 
               <div className="grid grid-cols-2 gap-2">
-                {[
-                  "https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp",
-                  "https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp",
-                  "https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp",
-                  "https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp",
-                ].map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt={`Recent ${i}`}
-                    className="rounded-lg w-full h-40 object-cover"
-                  />
-                ))}
+                {authUser.profile_pictures === 0 ? (
+                  <p>No photos to show</p>
+                ) : (
+                  authUser.profile_pictures.map((picture) => (
+                    <img 
+                      key={picture.id}
+                      src={picture.image}
+                      alt="user profile picture"
+                      className="rounded-lg w-full h-40 object-cover"
+                    />
+                  ))
+                )}
               </div>
             </div>
 
@@ -123,11 +128,11 @@ export function Profile() {
                 </a> */}
               </div>
 
-              {authUser.posts.length === 0 ? (
+              {posts.length === 0 ? (
                 <p>No posts to show</p>
               ) : (
-                <ul className="space-y-4">
-                  {authUser.posts.map((post) => (
+                <ul className="space-y-4 bg-gray-600 rounded-lg">
+                  {posts.map((post) => (
                     <div key={post.id}>
                       <hr className="border-t border-white/20 my-4" />
                       {/* <PostItem  post={post} /> */}

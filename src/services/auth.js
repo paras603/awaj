@@ -106,3 +106,29 @@ export async function fetchAuthUser(){
         return error;
     }
 }
+
+export async function fetchAuthPosts() {
+    try{
+        const response = await fetch(
+            `${API_BASE}/posts`,
+            {
+                method: "GET",
+                headers:{
+                    Accept: "application/json",
+                    Authorization: `Bearer ${getToken()}`
+                },
+            }
+        );
+
+        if(!response.ok){
+            const errorData = await response.json();
+            throw errorData;
+        }
+
+        const data = await response.json();
+        return data;
+    }catch(error){
+        console.log(error);
+        return error;
+    }
+}
