@@ -123,9 +123,9 @@ export function Profile() {
             <div className="mt-8">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="text-lg font-semibold">Recent Posts</h3>
-                {/* <a href="#" className="text-gray-500 text-sm">
+                <a href="#" className="text-gray-500 text-sm">
                   Show all
-                </a> */}
+                </a>
               </div>
 
               {posts.length === 0 ? (
