@@ -24,9 +24,9 @@ export async function getPost(id){
   }
 }
 
-export async function getUserPosts() {
+export async function getUserPosts(userId) {
   try {
-    const response = await fetch(`${API_BASE}/posts`, {
+    const response = await fetch(`${API_BASE}/allPosts/${userId}`, {
       method: "GET",
       headers: {
         Accept: "application/json",

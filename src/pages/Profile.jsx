@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
-import { fetchAuthUser, fetchAuthPosts } from "../services/auth";
 import { PostImage } from "../components/features/posts/postImage";
 import { PostItem } from "../components/features/posts/PostItem";
 import { useParams } from "react-router";
@@ -19,23 +18,22 @@ export function Profile() {
   useEffect( () => {
     (async() => {
       try{
-        const postsData = await getUserPosts();
-        console.log("RAW data from API (getUserPosts): ", postsData.data)
-        setPosts(postsData.data);
+        const userProfileData = await fetchUserProfile(userId);
+        setUserProfile(userProfileData.data);
 
-        const useProfileData = await fetchUserProfile(userId);
-        console.log("RAW data form API fetchUserProfile: ", useProfileData.data);
-        setUserProfile(useProfileData.data);
+        const postsData = await getUserPosts(userProfileData.data.user.id);
+        setPosts(postsData.data);
+        
       }catch(err){
         setError(err);
       }finally{
         setLoading(false);
       }
     }) ();
-  }, []);
+  }, [userId]);
 
   if(loading) return <div>Loading...</div>;
-  if(error) return <div>Error loading page!</div>;
+  if(error) return <div>404. Page not found</div>;
 
   return (
     <>
@@ -44,59 +42,46 @@ export function Profile() {
       <div className="min-h-screen bg-sky-200 py-10">
         <div className="max-w-3xl mx-auto bg-white shadow rounded-lg overflow-hidden">
           {/* Header */}
-          <div className="relative bg-black h-48">
+          <div className="relative bg-gray-500 h-48">
             <div className="absolute -bottom-12 left-8 flex items-end">
               <img
-                src={userProfile?.latest_profile_picture?.image}
-                alt={userProfile.username}
+                src={userProfile.user.profile_picture_url}
+                alt={userProfile.user.username}
                 className="w-32 h-32 rounded-full border-4 border-white"
               />
-              {/* <button className="ml-4 px-4 py-1 border border-gray-700 text-gray-700 rounded hover:bg-gray-100">
-                Edit Profile
-              </button> */}
             </div>
           </div>
 
           {/* User Info */}
           <div className="mt-16 px-8 pb-8">
-            <h2 className="text-2xl font-semibold">{userProfile.username}</h2>
-            <p className="text-gray-500">{userProfile.email}</p>
+            <h2 className="text-2xl font-semibold">{userProfile.user.username}</h2>
+            <p className="text-gray-500">{userProfile.user.email}</p>
 
             {/* Stats */}
             <div className="flex justify-around text-center mt-6 border-t pt-6">
               <div>
-                <p className="text-xl font-semibold">{userProfile.aura}</p>
+                <p className="text-xl font-semibold">{userProfile.user.aura}</p>
                 <p className="text-gray-500 text-sm">Aura</p>
               </div>
               <div>
-                <p className="text-xl font-semibold">1026</p>
+                <p className="text-xl font-semibold">{userProfile.followerCount}</p>
                 <p className="text-gray-500 text-sm">Followers</p>
               </div>
               <div>
-                <p className="text-xl font-semibold">478</p>
+                <p className="text-xl font-semibold">{userProfile.followingCount}</p>
                 <p className="text-gray-500 text-sm">Following</p>
               </div>
             </div>
 
             {/* Bio */}
-            { userProfile?.bio?.trim() && (
+            { userProfile.user?.bio?.trim() && (
               <div className="mt-8">
                 <h3 className="text-lg font-semibold mb-2">Bio</h3>
                 <div className="bg-gray-50 p-4 rounded">
-                  <p className="italic">{userProfile.bio}</p>
+                  <p className="italic">{userProfile.user.bio}</p>
                 </div>
               </div>
             )}
-
-            {/* another section */}
-            {/* <div className="mt-8">
-              <h3 className="text-lg font-semibold mb-2">Next section</h3>
-              <div className="bg-gray-50 p-4 rounded">
-                <p className="italic">Web Developer</p>
-                <p className="italic">Lives in New York</p>
-                <p className="italic">Photographer</p>
-              </div>
-            </div> */}
 
             {/* Photos */}
             <div className="mt-8">
@@ -108,10 +93,10 @@ export function Profile() {
               </div>
 
               <div className="grid grid-cols-2 gap-2">
-                {userProfile.profile_pictures.length === 0 ? (
+                {userProfile.user.profile_pictures.length === 0 ? (
                   <p>No photos to show</p>
                 ) : (
-                  userProfile.profile_pictures.map((picture) => (
+                  userProfile.user.profile_pictures.map((picture) => (
                     <img 
                       key={picture.id}
                       src={picture.image}
@@ -132,18 +117,18 @@ export function Profile() {
                 </a>
               </div>
 
-              {/* {userProfile.posts.length === 0 ? (
+              {posts.length === 0 ? (
                 <p>No posts to show</p>
               ) : (
                 <ul className="space-y-4 bg-gray-600 rounded-lg">
-                  {userProfile.posts.map((post) => (
+                  {posts.map((post) => (
                     <div key={post.id}>
                       <hr className="border-t border-white/20 my-4" />
                       <PostItem post={post} />
                     </div>
                   ))}
                 </ul>
-              )} */}
+              )}
               
             </div>
           </div>
