@@ -21,14 +21,14 @@ export function AppRoutes(){
                 <Route path='/signup' element={<SignUp/>} />
             </Route>
 
-
             {/* protected layout */}
             <Route element={<ProtectedLayout/>}>
-                <Route path='/profile' element={<Profile/>} />
                 <Route path='/dashboard' element={<Dashboard/>} />
                 <Route path='/settings' element={<Settings/>} />
                 <Route path='/posts/:id' element={<PostDetails/>} />
                 <Route path='/pictures' element={<Pictures/>} />
+
+                <Route path='/users/:userId' element={<Profile />} />
             </Route>
             
         </Routes>

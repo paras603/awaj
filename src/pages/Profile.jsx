@@ -3,25 +3,29 @@ import { Navbar } from "../components/Navbar";
 import { fetchAuthUser, fetchAuthPosts } from "../services/auth";
 import { PostImage } from "../components/features/posts/postImage";
 import { PostItem } from "../components/features/posts/PostItem";
+import { useParams } from "react-router";
+import { fetchUserProfile } from "../services/user";
+import { getUserPosts } from "../services/posts";
 
 export function Profile() {
+  const {userId} = useParams();
 
-  const [authUser, setAuthUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [posts, setPosts] = useState(null);
 
   useEffect( () => {
     (async() => {
       try{
-        const authUserData = await fetchAuthUser();
-        console.log("RAW data from API: ", authUserData.data)
-        setAuthUser(authUserData.data);
+        const postsData = await getUserPosts();
+        console.log("RAW data from API (getUserPosts): ", postsData.data)
+        setPosts(postsData.data);
 
-        const authPostsData = await fetchAuthPosts();
-        console.log("RAW data form API: ", authPostsData.data);
-        setPosts(authPostsData.data);
+        const useProfileData = await fetchUserProfile(userId);
+        console.log("RAW data form API fetchUserProfile: ", useProfileData.data);
+        setUserProfile(useProfileData.data);
       }catch(err){
         setError(err);
       }finally{
@@ -43,8 +47,8 @@ export function Profile() {
           <div className="relative bg-black h-48">
             <div className="absolute -bottom-12 left-8 flex items-end">
               <img
-                src={authUser?.latest_profile_picture?.image}
-                alt={authUser.username}
+                src={userProfile?.latest_profile_picture?.image}
+                alt={userProfile.username}
                 className="w-32 h-32 rounded-full border-4 border-white"
               />
               {/* <button className="ml-4 px-4 py-1 border border-gray-700 text-gray-700 rounded hover:bg-gray-100">
@@ -55,13 +59,13 @@ export function Profile() {
 
           {/* User Info */}
           <div className="mt-16 px-8 pb-8">
-            <h2 className="text-2xl font-semibold">{authUser.username}</h2>
-            <p className="text-gray-500">{authUser.email}</p>
+            <h2 className="text-2xl font-semibold">{userProfile.username}</h2>
+            <p className="text-gray-500">{userProfile.email}</p>
 
             {/* Stats */}
             <div className="flex justify-around text-center mt-6 border-t pt-6">
               <div>
-                <p className="text-xl font-semibold">{authUser.aura}</p>
+                <p className="text-xl font-semibold">{userProfile.aura}</p>
                 <p className="text-gray-500 text-sm">Aura</p>
               </div>
               <div>
@@ -75,11 +79,11 @@ export function Profile() {
             </div>
 
             {/* Bio */}
-            { authUser?.bio?.trim() && (
+            { userProfile?.bio?.trim() && (
               <div className="mt-8">
                 <h3 className="text-lg font-semibold mb-2">Bio</h3>
                 <div className="bg-gray-50 p-4 rounded">
-                  <p className="italic">{authUser.bio}</p>
+                  <p className="italic">{userProfile.bio}</p>
                 </div>
               </div>
             )}
@@ -104,10 +108,10 @@ export function Profile() {
               </div>
 
               <div className="grid grid-cols-2 gap-2">
-                {authUser.profile_pictures === 0 ? (
+                {userProfile.profile_pictures.length === 0 ? (
                   <p>No photos to show</p>
                 ) : (
-                  authUser.profile_pictures.map((picture) => (
+                  userProfile.profile_pictures.map((picture) => (
                     <img 
                       key={picture.id}
                       src={picture.image}
@@ -128,19 +132,18 @@ export function Profile() {
                 </a>
               </div>
 
-              {posts.length === 0 ? (
+              {/* {userProfile.posts.length === 0 ? (
                 <p>No posts to show</p>
               ) : (
                 <ul className="space-y-4 bg-gray-600 rounded-lg">
-                  {posts.map((post) => (
+                  {userProfile.posts.map((post) => (
                     <div key={post.id}>
                       <hr className="border-t border-white/20 my-4" />
-                      {/* <PostItem  post={post} /> */}
                       <PostItem post={post} />
                     </div>
                   ))}
                 </ul>
-              )}
+              )} */}
               
             </div>
           </div>

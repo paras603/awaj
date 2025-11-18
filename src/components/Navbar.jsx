@@ -25,7 +25,6 @@ export function Navbar(){
     (async() => {
       try{
         const data = await fetchAuthUser();
-        // console.log('Raw data from API:', data.data);
         setAuthUser(data.data);
       }catch(error){
         console.log(error)
@@ -72,7 +71,7 @@ export function Navbar(){
                     >
                       <button 
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={()=>{navigate('/profile')}}
+                        onClick={()=>{navigate(`/users/${authUser.id}`)}}
                       >Profile</button>
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
