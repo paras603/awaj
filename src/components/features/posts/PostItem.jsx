@@ -12,16 +12,15 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
 
-
   const handlePostClick = () => {
     if (isClickable && !selectedImage) {
-      navigate(`/posts/${post.id}`);
+      navigate(`/posts/${post.relationships.id}`);
     }
   };
 
   const handleUserProfileClick = (e) => {
     e.stopPropagation();
-    alert('user profile page coming soon');
+    navigate(`/users/${authUser.id}`);
   };
 
   return (

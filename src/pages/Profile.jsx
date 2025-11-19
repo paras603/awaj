@@ -49,13 +49,27 @@ export function Profile() {
                 alt={userProfile.user.username}
                 className="w-32 h-32 rounded-full border-4 border-white"
               />
+              
             </div>
           </div>
 
           {/* User Info */}
           <div className="mt-16 px-8 pb-8">
-            <h2 className="text-2xl font-semibold">{userProfile.user.username}</h2>
-            <p className="text-gray-500">{userProfile.user.email}</p>
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              
+              {/* Left: Username + Email */}
+              <div>
+                <h2 className="text-2xl font-semibold">{userProfile.user.username}</h2>
+                <p className="text-gray-500">{userProfile.user.email}</p>
+              </div>
+
+              <button
+                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition w-full sm:w-auto"
+              >
+                Follow
+              </button>
+
+            </div>
 
             {/* Stats */}
             <div className="flex justify-around text-center mt-6 border-t pt-6">
