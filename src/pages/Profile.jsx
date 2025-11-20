@@ -5,6 +5,7 @@ import { PostItem } from "../components/features/posts/PostItem";
 import { useParams } from "react-router";
 import { fetchUserProfile } from "../services/user";
 import { getUserPosts } from "../services/posts";
+import { fetchAuthUser } from "../services/auth";
 
 export function Profile() {
   const {userId} = useParams();
@@ -13,13 +14,19 @@ export function Profile() {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
 
 
   useEffect( () => {
     (async() => {
       try{
+        const authUserData = await fetchAuthUser();
+        setAuthUser(authUserData.data);
+        console.log('auth user id', authUserData.data.id)
+        
         const userProfileData = await fetchUserProfile(userId);
         setUserProfile(userProfileData.data);
+        console.log('user id, ', userProfileData.data.user.id)
 
         const postsData = await getUserPosts(userProfileData.data.user.id);
         setPosts(postsData.data);
@@ -63,11 +70,14 @@ export function Profile() {
                 <p className="text-gray-500">{userProfile.user.email}</p>
               </div>
 
+            {authUser.id !== userProfile.user.id && (
               <button
                 className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition w-full sm:w-auto"
               >
                 Follow
               </button>
+            )}
+
 
             </div>
 
