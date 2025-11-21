@@ -70,14 +70,13 @@ export function Profile() {
                 <p className="text-gray-500">{userProfile.user.email}</p>
               </div>
 
-            {authUser.id !== userProfile.user.id && (
-              <button
-                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition w-full sm:w-auto"
-              >
-                Follow
-              </button>
-            )}
-
+              {authUser.id !== userProfile.user.id && (
+                <button
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition w-full sm:w-auto"
+                >
+                  Follow
+                </button>
+              )}
 
             </div>
 
