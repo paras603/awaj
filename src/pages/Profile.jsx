@@ -39,6 +39,10 @@ export function Profile() {
     }) ();
   }, [userId]);
 
+  const followClick = () => {
+    alert('follow')
+  }
+
   if(loading) return <div>Loading...</div>;
   if(error) return <div>404. Page not found</div>;
 
@@ -73,11 +77,11 @@ export function Profile() {
               {authUser.id !== userProfile.user.id && (
                 <button
                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition w-full sm:w-auto"
+                  onClick={()=>{followClick()}}
                 >
                   Follow
                 </button>
               )}
-
             </div>
 
             {/* Stats */}
