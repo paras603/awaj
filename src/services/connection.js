@@ -5,4 +5,3 @@ export async function follow(userId) {
         const response = await fetch(`${API_BASE}/`)
     }
 }
-// sfldkjasf
