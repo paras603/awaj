@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 import { fetchUserProfile } from "../services/user";
 import { getUserPosts } from "../services/posts";
 import { fetchAuthUser } from "../services/auth";
+import { follow, unfollow } from "../services/connection";
 
 export function Profile() {
   const {userId} = useParams();
@@ -15,6 +16,12 @@ export function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [authUser, setAuthUser] = useState(null);
+
+  const [followStatus, setFollowStatus] = useState('follow');
+  const [isFollowing, setIsFollowing] = useState(false);
+
+const [followLoading, setFollowLoading] = useState(false);
+
 
 
   useEffect( () => {
@@ -26,7 +33,8 @@ export function Profile() {
         
         const userProfileData = await fetchUserProfile(userId);
         setUserProfile(userProfileData.data);
-        console.log('user id, ', userProfileData.data.user.id)
+        setIsFollowing(userProfileData.data.isFollowing)
+        console.log('user id, ', userProfileData.data.isFollowing)
 
         const postsData = await getUserPosts(userProfileData.data.user.id);
         setPosts(postsData.data);
@@ -39,9 +47,32 @@ export function Profile() {
     }) ();
   }, [userId]);
 
-  const followClick = () => {
-    alert('follow')
-  }
+  const followClick = async (userId) => {
+    try{
+      setFollowLoading(true);
+
+      if(isFollowing){
+        await unfollow(userId);
+        setIsFollowing(false);
+      } else {
+        await follow(userId);
+        setIsFollowing(true);
+      } 
+
+      
+    } catch(err){
+      console.log(err);
+    }finally{
+      setFollowLoading(false);
+      setUserProfile(prev => ({
+  ...prev,
+  followerCount: isFollowing
+    ? prev.followerCount - 1
+    : prev.followerCount + 1
+}));
+
+    }
+  };
 
   if(loading) return <div>Loading...</div>;
   if(error) return <div>404. Page not found</div>;
@@ -76,10 +107,20 @@ export function Profile() {
 
               {authUser.id !== userProfile.user.id && (
                 <button
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition w-full sm:w-auto"
-                  onClick={()=>{followClick()}}
+                  disabled = {followLoading}
+                  className={`px-4 py-2 rounded-lg transition w-full sm:w-auto
+                    ${isFollowing 
+                      ? "border border-gray-300 text-gray-700 hover:bg-gray-100" 
+                      : "bg-gray-600 text-white hover:bg-gray-700"}
+                  `}
+                  onClick={()=>{followClick(userProfile.user.id)}}
                 >
-                  Follow
+                  {followLoading 
+                    ? "Loading" 
+                    : isFollowing 
+                      ? "Unfollow"
+                      : "Follow"
+                  }
                 </button>
               )}
             </div>
@@ -115,7 +156,7 @@ export function Profile() {
               <div className="flex justify-between items-center mb-3">
                 <h3 className="text-lg font-semibold">Recent Photos</h3>
                 <a href="#" className="text-gray-500 text-sm">
-                  Show all
+                  Show all  
                 </a>
               </div>
 
