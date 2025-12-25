@@ -47,6 +47,29 @@ export async function getUserPosts(userId) {
   }
 }
 
+export async function getUserSavedPosts() {
+  try{
+    const response = await fetch(`${API_BASE}/savedPosts`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData;
+    }
+
+    const data = await response.json();
+    return data;
+    
+  }catch(error){
+    return error;
+  }
+}
+
 export async function getAllPosts() {
   try {
     const response = await fetch(`${API_BASE}/allPosts`, {

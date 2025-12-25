@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchAuthUser } from "../services/auth";
 import { fetchUserProfile } from "../services/user";
-import { getUserPosts } from "../services/posts";
+import { getUserPosts, getUserSavedPosts } from "../services/posts";
 import { follow, unfollow } from "../services/connection";
 
 export function userProfile(userId){
@@ -9,6 +9,7 @@ export function userProfile(userId){
         authUser: null,
         profile: null,
         posts: [],
+        savedPosts: [],
         loading: true,
         error: null,
         followLoading: false,
@@ -27,12 +28,14 @@ export function userProfile(userId){
                 if(!mounted) return;
 
                 const postsRes = await getUserPosts(profileRes.data.user.id);
+                const savedPostsRes = await getUserSavedPosts();
 
                 setState(prev => ({
                     ...prev,
                     authUser: authRes.data,
                     profile: profileRes.data,
                     posts: postsRes.data,
+                    savedPosts: savedPostsRes.data,
                     loading: false,
                 }));
             }catch(err){

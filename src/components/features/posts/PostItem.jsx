@@ -20,7 +20,7 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
 
   const handleUserProfileClick = (e) => {
     e.stopPropagation();
-    navigate(`/users/${authUser.id}`);
+    navigate(`/users/${post.relationships.id}`);
   };
 
   return (

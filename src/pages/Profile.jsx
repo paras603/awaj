@@ -2,6 +2,7 @@ import { Navbar } from "../components/Navbar";
 import { PostItem } from "../components/features/posts/PostItem";
 import { useParams } from "react-router";
 import { userProfile } from "../hooks/useProfile";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 
 export function Profile() {
   const { userId } = useParams();
@@ -10,6 +11,7 @@ export function Profile() {
     authUser,
     profile,
     posts,
+    savedPosts,
     loading,
     error,
     followLoading,
@@ -21,6 +23,17 @@ export function Profile() {
   if (!authUser || !profile) return null;
 
   const isOwnProfile = authUser.id === profile.user.id;
+
+  const categories = [
+    {
+      name: 'Recent',
+      posts: posts,
+    },
+    {
+      name: 'Saved',
+      posts: savedPosts,
+    }
+  ]
 
   return (
     <>
@@ -119,28 +132,42 @@ export function Profile() {
               </div>
             </div>
 
-            {/* Posts */}
-            <div className="mt-8">
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-lg font-semibold">Recent Posts</h3>
-                <a href="#" className="text-gray-500 text-sm">
-                  Show all
-                </a>
-              </div>
-
-              {posts.length === 0 ? (
-                <p>No posts to show</p>
-              ) : (
-                <ul className="space-y-4 bg-gray-600 rounded-lg">
-                  {posts.map((post) => (
-                    <div key={post.id}>
-                      <hr className="border-t border-white/20 my-4" />
-                      <PostItem post={post} />
-                    </div>
+                {/* Recent and saved posts */}
+            <div className="flex justify-between items-center mb-3 pt-14">
+              <div className="w-full">
+              <TabGroup>
+                <TabList className="flex gap-4">
+                  {categories.map(({name}) => (
+                    <Tab 
+                      key={name}
+                      className="rounded-full px-4 py-1.5 text-md font-semibold text-gray-600 border border-transparent focus:outline-none data-hover:bg-gray-100 data-selected:bg-gray-200 data-selected:text-gray-900 data-selected:border-gray-300 data-selected:data-hover:bg-gray-300"
+                    >
+                      {name}
+                    </Tab>
                   ))}
-                </ul>
-              )}
+                </TabList>
+                <TabPanels>
+                  {categories.map(({name, posts}) => (
+                    <TabPanel key={name} className="mt-4 rounded-xl bg-gray-50 p-4">
+                      {posts.length === 0 ? (
+                        <p>No posts to show</p>
+                      ) : (
+                        <ul className="space-y-4 bg-gray-600 rounded-lg">
+                          {posts.map((post) => (
+                            <div key={post.id}>
+                              <hr className="border-t border-gray-200 my-4" />
+                              <PostItem post={post} />
+                            </div>
+                          ))}
+                        </ul>
+                      )}
+                    </TabPanel>
+                  ))}
+                </TabPanels>
+              </TabGroup>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
