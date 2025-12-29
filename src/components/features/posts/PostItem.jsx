@@ -14,7 +14,7 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
 
   const handlePostClick = () => {
     if (isClickable && !selectedImage) {
-      navigate(`/posts/${post.relationships.id}`);
+      navigate(`/posts/${post.id}`);
     }
   };
 

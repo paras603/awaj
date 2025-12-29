@@ -39,7 +39,6 @@ export function SignInForm(){
         if(response.data){
           const {token, user} = response.data;
           login(user, token);
-          console.log(response.data, 'logged in user')
           navigate('/dashboard')
         }
   

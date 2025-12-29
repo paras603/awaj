@@ -22,11 +22,6 @@ export function PostDetails() {
     const [comments, setComments] = useState([]);
 
     useEffect(() => {
-        console.log('post details component');
-    }, []);
-
-
-    useEffect(() => {
         async function fetchPost() {
             try {
                 const data = await getPost(id);
