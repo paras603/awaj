@@ -132,6 +132,8 @@ export function Profile() {
               </div>
             </div>
 
+            {/* auth user saved post shows in saved post for all users profile */}
+
                 {/* Recent and saved posts */}
             <div className="flex justify-between items-center mb-3 pt-14">
               <div className="w-full">
