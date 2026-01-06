@@ -19,10 +19,6 @@ export function CreatePostModal({
     setFileList((prevList) => prevList.filter((_, index) => index !== indexToRemove))
   }
 
-  // useEffect(() => {
-  //   console.log("fileList, ", fileList)
-  // }, [fileList])
-
   const handleFileChange = (e) => {
     if (e.target.files){
       const newFiles = Array.from(e.target.files)
@@ -53,15 +49,12 @@ export function CreatePostModal({
           return;
         }
       }
-      // console.log("file  is ",fileList)
-      // formData.append('images []', fileList);
       fileList.forEach((file) => {
         formData.append('images []', file);
       })
 
     }
       
-    // console.log([...formData.entries()]);
     setLoading(true);
     try {
       const response = await createPost(formData);

@@ -53,7 +53,7 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
               </div>
 
               {/* Post Content */}
-              <p className="text-gray-200 text-[15px] mb-3 leading-snug" style={{ wordBreak: "break-all"}}>
+              <p className="text-gray-200 text-[15px] mb-3 leading-snug whitespace-pre-wrap" style={{ wordBreak: "break-all"}}>
                 {post.attributes.content}
               </p>
 
