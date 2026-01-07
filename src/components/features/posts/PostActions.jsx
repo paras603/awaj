@@ -24,6 +24,8 @@ export function PostActions({post}){
 
     const [ isBookmarked, setIsBookmarked ] = useState(userInteraction?.attributes?.is_bookmarked ?? false);
 
+    //todo: bookmark need to refresh without hard reload
+
     const handleBookmarkClick = () => {
         setIsBookmarked(!isBookmarked);
         if(isBookmarked){
