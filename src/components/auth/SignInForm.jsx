@@ -35,7 +35,7 @@ export function SignInForm(){
         formData.append("password", password);
   
         const response = await loginUser(formData);
-        
+        console.log({response});
         if(response.data){
           const {token, user} = response.data;
           login(user, token);
