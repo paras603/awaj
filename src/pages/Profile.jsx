@@ -3,6 +3,7 @@ import { PostItem } from "../components/features/posts/PostItem";
 import { useParams } from "react-router";
 import { userProfile } from "../hooks/useProfile";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { useState } from "react";
 
 export function Profile() {
   const { userId } = useParams();
@@ -24,6 +25,8 @@ export function Profile() {
 
   const isOwnProfile = authUser.id === profile.user.id;
 
+  const [bookmarkedPosts, setBookmarkedPosts] = useState(savedPosts);
+
   const categories = [
     {
       name: 'Recent',
@@ -31,9 +34,13 @@ export function Profile() {
     },
     {
       name: 'Saved',
-      posts: savedPosts,
+      posts: bookmarkedPosts,
     }
   ]
+
+  console.log('saved posts', bookmarkedPosts)
+
+
 
   return (
     <>
