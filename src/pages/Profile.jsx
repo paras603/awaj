@@ -38,7 +38,6 @@ export function Profile() {
     }
   ]
 
-  console.log('saved posts', bookmarkedPosts)
 
 
 
