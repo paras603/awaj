@@ -39,7 +39,7 @@ export function Profile() {
   ]
 
 
-
+console.log(bookmarkedPosts)
 
   return (
     <>
