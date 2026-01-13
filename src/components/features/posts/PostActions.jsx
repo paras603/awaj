@@ -7,7 +7,7 @@ import { BookmarkFilledIcon } from "../../ui/BookmarkFilledIcon";
 import { useAuth } from "../../../context/AuthContext";
 import { bookmark, unBookmark } from "../../../services/interaction";
 
-export function PostActions({post}){
+export function PostActions({post, onSave, onUnsave}){
 
     const [ openCommentModal, setOpenCommentModal ] = useState(false);
     const [ comments, setComments ] = useState(post.comments || []);
@@ -25,6 +25,17 @@ export function PostActions({post}){
     const [ isBookmarked, setIsBookmarked ] = useState(userInteraction?.attributes?.is_bookmarked ?? false);
 
     //todo: bookmark need to refresh without hard reload
+      const [isSaved, setIsSaved] = useState(post.isSaved);
+
+    const handleToggleSave = () => {
+        if (isSaved) {
+        onUnsave(post.id);
+        } else {
+        onSave(post);
+        }
+
+        setIsSaved(prev => !prev); // instant UI feedback
+    };
 
     const handleBookmarkClick = () => {
         setIsBookmarked(!isBookmarked);
@@ -68,9 +79,10 @@ export function PostActions({post}){
                 </div>
                 <div 
                     className="flex items-center space-x-1 hover:text-white transition-colors"
-                    onClick={handleBookmarkClick}    
+                    // onClick={handleBookmarkClick}   
+                    onClick={handleToggleSave} 
                 >
-                    {isBookmarked ? <BookmarkFilledIcon/> : <BookmarkIcon/>}
+                    {isSaved ? <BookmarkFilledIcon/> : <BookmarkIcon/>}
                     <span>{bookmarkCount}</span>
                 </div>
             </div>

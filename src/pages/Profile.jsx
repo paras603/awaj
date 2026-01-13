@@ -16,7 +16,9 @@ export function Profile() {
     loading,
     error,
     followLoading,
-    toggleFollow
+    toggleFollow,
+    savePost,
+    unsavePost
   } = userProfile(userId);
 
   if (loading) return <div>Loading...</div>;
@@ -25,8 +27,6 @@ export function Profile() {
 
   const isOwnProfile = authUser.id === profile.user.id;
 
-  const [bookmarkedPosts, setBookmarkedPosts] = useState(savedPosts);
-
   const categories = [
     {
       name: 'Recent',
@@ -34,12 +34,9 @@ export function Profile() {
     },
     {
       name: 'Saved',
-      posts: bookmarkedPosts,
+      posts: savedPosts,
     }
   ]
-
-
-console.log(bookmarkedPosts)
 
   return (
     <>
@@ -164,7 +161,11 @@ console.log(bookmarkedPosts)
                           {posts.map((post) => (
                             <div key={post.id}>
                               <hr className="border-t border-gray-200 my-4" />
-                              <PostItem post={post} />
+                              <PostItem 
+                                post={post}
+                                onSave={savePost}
+                                onUnSave={unsavePost}
+                              />
                             </div>
                           ))}
                         </ul>

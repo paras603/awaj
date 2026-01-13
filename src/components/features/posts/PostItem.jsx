@@ -7,10 +7,13 @@ import { PostActions } from "./PostActions.jsx";
 import { useEffect, useState } from "react";
 import { PostImage } from "./postImage.jsx";
 
-export function PostItem({ post, isClickable = true, hideActions = false }) {
+export function PostItem({ post, isClickable = true, hideActions = false, onSave, onUnsave }) {
   const { authUser } = useAuth();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
+
+
+
 
   const handlePostClick = () => {
     if (isClickable && !selectedImage) {
@@ -64,7 +67,7 @@ export function PostItem({ post, isClickable = true, hideActions = false }) {
 
             {/* Post Actions */}
             {!hideActions && (
-              <PostActions post={post}  />
+              <PostActions post={post} onSave={onSave} onUnsave={onUnsave} />
             )}
 
             

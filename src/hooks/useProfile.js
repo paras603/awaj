@@ -9,11 +9,14 @@ export function userProfile(userId){
         authUser: null,
         profile: null,
         posts: [],
-        savedPosts: [],
+        // savedPosts: [],
         loading: true,
         error: null,
         followLoading: false,
     });
+
+    const [savedPosts, setSavedPosts] = useState<Post[]>([]);
+
 
     useEffect(() => {
         let mounted = true;
@@ -88,9 +91,27 @@ export function userProfile(userId){
         }
     }, [state.profile]);
 
+    const savePost = async (post: Post) => {
+        await api.savePost(post.id);
+
+        setSavedPosts(prev => {
+            if (prev.some(p => p.id === post.id)) return prev;
+            return [post, ...prev];
+        });
+    };
+
+    const unsavePost = async (postId: string) => {
+        await api.unsavePost(postId);
+
+        setSavedPosts(prev => prev.filter(p => p.id !== postId));
+    };
+
+
     return {
         ...state,
-        toggleFollow
+        toggleFollow,
+        savePost,
+        unsavePost
     };
 
 }
