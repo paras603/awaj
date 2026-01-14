@@ -1,7 +1,7 @@
 import { Navbar } from "../components/Navbar";
 import { PostItem } from "../components/features/posts/PostItem";
 import { useParams } from "react-router";
-import { userProfile } from "../hooks/useProfile";
+import { useProfile } from "../hooks/useProfile";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useState } from "react";
 
@@ -19,7 +19,19 @@ export function Profile() {
     toggleFollow,
     savePost,
     unsavePost
-  } = userProfile(userId);
+  } = useProfile(userId);
+
+  console.log(
+    profile
+    // posts,
+    // savedPosts,
+    // loading,
+    // error,
+    // followLoading,
+    // toggleFollow,
+    // savePost,
+    // unsavePost
+  );
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>404. Page not found</div>;

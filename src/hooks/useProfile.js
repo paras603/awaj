@@ -4,18 +4,18 @@ import { fetchUserProfile } from "../services/user";
 import { getUserPosts, getUserSavedPosts } from "../services/posts";
 import { follow, unfollow } from "../services/connection";
 
-export function userProfile(userId){
+export function useProfile(userId){
     const [state, setState] = useState({
         authUser: null,
         profile: null,
         posts: [],
-        // savedPosts: [],
+        savedPosts: [],
         loading: true,
         error: null,
         followLoading: false,
     });
 
-    const [savedPosts, setSavedPosts] = useState<Post[]>([]);
+    // const [savedPosts, setSavedPosts] = useState<Post[]>([]);
 
 
     useEffect(() => {
@@ -91,27 +91,27 @@ export function userProfile(userId){
         }
     }, [state.profile]);
 
-    const savePost = async (post: Post) => {
-        await api.savePost(post.id);
+    // const savePost = async (post: Post) => {
+    //     await api.savePost(post.id);
 
-        setSavedPosts(prev => {
-            if (prev.some(p => p.id === post.id)) return prev;
-            return [post, ...prev];
-        });
-    };
+    //     setSavedPosts(prev => {
+    //         if (prev.some(p => p.id === post.id)) return prev;
+    //         return [post, ...prev];
+    //     });
+    // };
 
-    const unsavePost = async (postId: string) => {
-        await api.unsavePost(postId);
+    // const unsavePost = async (postId: string) => {
+    //     await api.unsavePost(postId);
 
-        setSavedPosts(prev => prev.filter(p => p.id !== postId));
-    };
+    //     setSavedPosts(prev => prev.filter(p => p.id !== postId));
+    // };
 
 
     return {
         ...state,
         toggleFollow,
-        savePost,
-        unsavePost
+        // savePost,
+        // unsavePost
     };
 
 }
