@@ -22,15 +22,15 @@ export function Profile() {
   } = useProfile(userId);
 
   console.log(
-    profile
-    // posts,
-    // savedPosts,
-    // loading,
-    // error,
-    // followLoading,
-    // toggleFollow,
-    // savePost,
-    // unsavePost
+    profile,
+    posts,
+    savedPosts,
+    loading,
+    error,
+    followLoading,
+    toggleFollow,
+    savePost,
+    unsavePost
   );
 
   if (loading) return <div>Loading...</div>;
